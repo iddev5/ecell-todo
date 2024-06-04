@@ -26,4 +26,3 @@ export const deleteTodo = asyncHandler(async (req, res) => {
   const todo = await Todo.findByIdAndDelete(req.params.id);
   res.json(todo);
 });
-

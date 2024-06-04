@@ -6,18 +6,25 @@ function App() {
   const [todos, setTodos] = useState([]);
 
   useEffect(() => {
-    setState("fetching-get")
+    setState("fetching-get");
     const fetchData = async () => {
       const res = await fetch("/api/");
       const json = await res.json();
       setTodos(json);
-      setState("none")
-    }
-    
-    fetchData();
-  }, [])
+      setState("none");
+    };
 
-  return <TodoList todos={todos} setTodos={setTodos} state={state} setState={setState} />
+    fetchData();
+  }, []);
+
+  return (
+    <TodoList
+      todos={todos}
+      setTodos={setTodos}
+      state={state}
+      setState={setState}
+    />
+  );
 }
 
 export default App;
