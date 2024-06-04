@@ -26,12 +26,23 @@ function TodoList({todos, setTodos, state, setState}) {
     setAddTodo(false);
   }
   
-  return <div>
-    {!addTodo &&
-      <button onClick={() => setAddTodo(true)}>New</button> 
-    }
+  return <div className="container">
+    <div className="navbar navbar-expand-lg bg-body-tertiary">
+      <div className="container-fluid">
+      <div>
+        <a className="navbar-brand" href="#">Todo List</a>
+        {!addTodo &&
+          <button className="btn btn-primary" onClick={() => setAddTodo(true)}>New</button> 
+        }
+      </div>
+      <form className="d-flex m-2" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" />
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+    </div>
+    </div>
     {state === "fetching-get" && <p>Loading data</p>}
-    <div>
+    <div className="list-group">
       {todos.map((todo) => <Todo key={todo._id} data={todo} todos={todos} setTodos={setTodos} />)}
       {addTodo && <Form onSubmit={createTodo} onCancel={() => setAddTodo(false)} defaultTitle="" defaultDesc="" /> }
     </div>
