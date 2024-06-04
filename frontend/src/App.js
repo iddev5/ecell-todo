@@ -15,6 +15,26 @@ function App() {
     fetchData();
   }, [])
 
+  async function createTodo(event) {
+    event.preventDefault();
+
+    const new_todo = {
+      title: event.target.title.value,
+      desc: event.target.desc.value
+    };
+
+    const returned_todo = await fetch("/api/", {
+      method: 'POST',
+      body: JSON.stringify(new_todo),
+      headers: {
+        'Content-Type': "application/json"
+      }
+    })
+
+    const content = await returned_todo.json();
+    setTodos([...todos, content]);
+    setAddTodo(false);
+  }
   
   return <div>
     {!addTodo &&
@@ -22,14 +42,14 @@ function App() {
     }
     <div>
       {todos.map((todo) => <Todo key={todo._id} data={todo} />)}
-      {addTodo && <form>
+      {addTodo && <form onSubmit={createTodo}>
         <input type="text" name="title" id="title" />
-        <label for="title">Title</label>
+        <label htmlFor="title">Title</label>
       
         <textarea name="desc" id="desc" />
-        <label for="desc">Description</label>
+        <label htmlFor="desc">Description</label>
 
-        <input type="submit" value="Save" />
+        <button type="submit" value="submit">Done</button>
         <button onClick={() => setAddTodo(false)}>Cancel</button>
       </form>}
     </div>
