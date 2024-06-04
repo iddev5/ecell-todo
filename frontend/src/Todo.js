@@ -3,6 +3,7 @@ import Form from "./Form.js";
 
 function Todo({data, todos, setTodos}) {
 	const [change, setChange] = useState(false)
+	const [complete, setComplete] = useState(data.completed);
 
 	async function deleteTodo() {
 		await fetch("http://127.0.0.1:8080/api/" + data._id + "/", {
@@ -40,6 +41,18 @@ function Todo({data, todos, setTodos}) {
 		setChange(false);
 	}
 
+	async function markCompleted() {
+		const res = await fetch(`/api/${data._id}/`, {
+			method: 'PUT',
+			body: JSON.stringify({ completed: !complete }),
+			headers: {
+				'Content-Type': "application/json"
+			}
+		});
+		
+		setComplete(!complete);
+	}
+
 	return <div>
 			{change &&
 				<div>
@@ -47,9 +60,11 @@ function Todo({data, todos, setTodos}) {
 				</div>}
 			{!change &&
 	      <div>
+					<button onClick={markCompleted}>Completed</button>
 	        <button onClick={() => setChange(true)}><h1>{data.title}</h1></button>
 	        <div><button onClick={() => setChange(true)}><p>{data.desc}</p></button></div>
 					<button onClick={deleteTodo}>Delete</button>
+					{complete && <p>This is complete</p>}
 	      </div>}
 		</div>
 }
