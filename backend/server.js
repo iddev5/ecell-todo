@@ -19,8 +19,8 @@ app.use(express.json());
 
 app.post("/api", createTodo);
 app.get("/api", getTodos);
-app.put("/api", updateTodo);
-app.delete("/api", deleteTodo);
+app.put("/api/:id", updateTodo);
+app.delete("/api/:id", deleteTodo);
 
 const PORT = process.env.PORT || 8080;
 app.listen(
