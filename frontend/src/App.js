@@ -2,14 +2,17 @@ import { useState, useEffect } from "react";
 import Todo from "./Todo.js";
 
 function App() {
+  const [state, setState] = useState("none");
   const [todos, setTodos] = useState([]);
   const [addTodo, setAddTodo] = useState(false);
 
   useEffect(() => {
+    setState("fetching-get")
     const fetchData = async () => {
       const res = await fetch("/api/");
       const json = await res.json();
       setTodos(json);
+      setState("none")
     }
     
     fetchData();
@@ -40,6 +43,7 @@ function App() {
     {!addTodo &&
       <button onClick={() => setAddTodo(true)}>New</button> 
     }
+    {state === "fetching-get" && <p>Loading data</p>}
     <div>
       {todos.map((todo) => <Todo key={todo._id} data={todo} />)}
       {addTodo && <form onSubmit={createTodo}>
