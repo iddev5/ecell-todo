@@ -62,6 +62,7 @@ function Todo({ data, todos, setTodos }) {
           <Form
             onSubmit={updateTodo}
             onCancel={() => setChange(false)}
+            emptyTitle={false}
             defaultTitle={data.title}
             defaultDesc={data.desc}
           />

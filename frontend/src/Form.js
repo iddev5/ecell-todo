@@ -1,4 +1,4 @@
-function Form({ onSubmit, onCancel, defaultTitle, defaultDesc }) {
+function Form({ onSubmit, onCancel, emptyTitle, defaultTitle, defaultDesc }) {
   return (
     <form className="list-group-item" onSubmit={onSubmit}>
       <div className="mb-3">
@@ -13,6 +13,11 @@ function Form({ onSubmit, onCancel, defaultTitle, defaultDesc }) {
           defaultValue={defaultTitle}
         />
       </div>
+      {emptyTitle && (
+        <div>
+          <p>Blank title is not allowed</p>
+        </div>
+      )}
       <div className="mb-3">
         <label className="form-label" htmlFor="desc">
           Description
