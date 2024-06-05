@@ -78,7 +78,7 @@ function Todo({ data, todos, setTodos }) {
                   width="24"
                   height="24"
                   fill="currentColor"
-                  class="bi bi-check-circle"
+                  className="bi bi-check-circle"
                   viewBox="0 0 16 16"
                 >
                   <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
@@ -91,7 +91,7 @@ function Todo({ data, todos, setTodos }) {
                   width="24"
                   height="24"
                   fill="currentColor"
-                  class="bi bi-circle"
+                  className="bi bi-circle"
                   viewBox="0 0 16 16"
                 >
                   <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
@@ -115,7 +115,7 @@ function Todo({ data, todos, setTodos }) {
               {data.title}
             </button>
             <button
-              className="col-1 btn rounded-circle text-danger p-2 opacity-100"
+              className="col-1 btn text-danger p-2 opacity-100"
               onClick={deleteTodo}
             >
               <svg
@@ -123,7 +123,7 @@ function Todo({ data, todos, setTodos }) {
                 width="24"
                 height="24"
                 fill="currentColor"
-                class="bi bi-trash"
+                className="bi bi-trash"
                 viewBox="0 0 16 16"
               >
                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
