@@ -14,8 +14,8 @@ function Form({ onSubmit, onCancel, emptyTitle, defaultTitle, defaultDesc }) {
         />
       </div>
       {emptyTitle && (
-        <div>
-          <p>Blank title is not allowed</p>
+        <div className="text-danger">
+          <p>*Blank title is not allowed</p>
         </div>
       )}
       <div className="mb-3">
