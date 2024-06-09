@@ -6,21 +6,18 @@ function Todo({ data, todos, setTodos }) {
   const [complete, setComplete] = useState(data.completed);
   const [onComplete, setOnComplete] = useState(false);
   const [onUpdate, setOnUpdate] = useState(false);
-  const [onDelete, setOnDelete] = useState(false);
   const titleRef = useRef(null);
   const descRef = useRef(null);
 
   const host = process.env.REACT_APP_HOST || "";
 
   async function deleteTodo() {
-    setOnDelete(true);
     await fetch(`${host}/api/${data._id}/`, {
       method: "DELETE",
     });
 
     const newTodos = todos.filter((it) => it._id !== data._id);
     setTodos(newTodos);
-    setOnDelete(false);
   }
 
   async function updateTodo(event) {
@@ -139,33 +136,22 @@ function Todo({ data, todos, setTodos }) {
             >
               {data.title}
             </button>
-            {onDelete && (
-              <div className="col-1 text-center">
-                <div
-                  className="spinner-border text-primary mt-2"
-                  style={{ width: "1.5rem", height: "1.5rem" }}
-                  role="status"
-                ></div>
-              </div>
-            )}
-            {!onDelete && (
-              <button
-                className="col-1 btn text-danger p-2 opacity-100"
-                onClick={deleteTodo}
+            <button
+              className="col-1 btn text-danger p-2 opacity-100"
+              onClick={deleteTodo}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="currentColor"
+                className="bi bi-trash"
+                viewBox="0 0 16 16"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  fill="currentColor"
-                  className="bi bi-trash"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
-                  <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
-                </svg>
-              </button>
-            )}
+                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+              </svg>
+            </button>
           </div>
           <div className="row">
             <div className="col-1"></div>
