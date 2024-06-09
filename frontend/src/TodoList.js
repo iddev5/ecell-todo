@@ -56,7 +56,19 @@ function TodoList({ todos, setTodos, state, setState }) {
           )}
         </div>
       </div>
-      {state === "fetching-get" && <p>Loading data</p>}
+      {state === "fetching-get" && (
+        <div className="d-flex justify-content-center">
+          <div className="text-center">
+            <div
+              className="spinner-border text-primary"
+              style={{ width: "3rem", height: "3rem", "margin-top": "10em" }}
+              role="status"
+            ></div>
+            <h2>Please wait</h2>
+            <p className="fs-5">Todos is loading</p>
+          </div>
+        </div>
+      )}
       <div className="list-group">
         {todos.map((todo) => (
           <Todo key={todo._id} data={todo} todos={todos} setTodos={setTodos} />
