@@ -4,12 +4,15 @@ import Form from "./Form.js";
 
 function TodoList({ todos, setTodos, state, setState }) {
   const [addTodo, setAddTodo] = useState(false);
+  const [onCreate, setOnCreate] = useState(false);
   const [emptyTitleError, setEmptyTitleError] = useState(false);
 
   const host = process.env.REACT_APP_HOST || "";
 
   async function createTodo(event) {
     event.preventDefault();
+
+    setOnCreate(true);
 
     const new_todo = {
       title: event.target.title.value,
@@ -34,6 +37,7 @@ function TodoList({ todos, setTodos, state, setState }) {
     const content = await returned_todo.json();
     setTodos([...todos, content]);
     setAddTodo(false);
+    setOnCreate(false);
   }
 
   return (
@@ -74,13 +78,16 @@ function TodoList({ todos, setTodos, state, setState }) {
           <Todo key={todo._id} data={todo} todos={todos} setTodos={setTodos} />
         ))}
         {addTodo && (
-          <Form
-            onSubmit={createTodo}
-            onCancel={() => setAddTodo(false)}
-            emptyTitle={emptyTitleError}
-            defaultTitle=""
-            defaultDesc=""
-          />
+          <div className="list-group-item">
+            <Form
+              onSubmit={createTodo}
+              onCancel={() => setAddTodo(false)}
+              emptyTitle={emptyTitleError}
+              defaultTitle=""
+              defaultDesc=""
+              showSpinner={onCreate}
+            />
+          </div>
         )}
       </div>
     </div>

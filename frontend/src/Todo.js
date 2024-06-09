@@ -4,6 +4,7 @@ import Form from "./Form.js";
 function Todo({ data, todos, setTodos }) {
   const [change, setChange] = useState(false);
   const [complete, setComplete] = useState(data.completed);
+  const [onUpdate, setOnUpdate] = useState(false);
   const titleRef = useRef(null);
   const descRef = useRef(null);
 
@@ -20,6 +21,8 @@ function Todo({ data, todos, setTodos }) {
 
   async function updateTodo(event) {
     event.preventDefault();
+
+    setOnUpdate(true);
 
     // TODO: OR-ing is not needed if below TODO is fixed
     const form_data = {
@@ -43,6 +46,7 @@ function Todo({ data, todos, setTodos }) {
 
     setTodos(new_todos);
     setChange(false);
+    setOnUpdate(false);
   }
 
   async function markCompleted() {
@@ -67,6 +71,7 @@ function Todo({ data, todos, setTodos }) {
             emptyTitle={false}
             defaultTitle={data.title}
             defaultDesc={data.desc}
+            showSpinner={onUpdate}
           />
         </div>
       )}
