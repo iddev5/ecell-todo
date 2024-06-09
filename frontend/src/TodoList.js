@@ -75,7 +75,7 @@ function TodoList({ todos, setTodos, state, setState }) {
         {todos.map((todo) => (
           <Todo key={todo._id} data={todo} todos={todos} setTodos={setTodos} />
         ))}
-        {todos.length === 0 && state !== "fetching-get" && (
+        {todos.length === 0 && state !== "fetching-get" && !addTodo && (
           <div className="text-center" style={{ "margin-top": "10em" }}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
