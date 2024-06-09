@@ -6,6 +6,8 @@ function TodoList({ todos, setTodos, state, setState }) {
   const [addTodo, setAddTodo] = useState(false);
   const [emptyTitleError, setEmptyTitleError] = useState(false);
 
+  const host = process.env.REACT_APP_HOST || "";
+
   async function createTodo(event) {
     event.preventDefault();
 
@@ -19,7 +21,9 @@ function TodoList({ todos, setTodos, state, setState }) {
       return;
     }
 
-    const returned_todo = await fetch("/api/", {
+    console.log(host, `${host}/api/`);
+
+    const returned_todo = await fetch(`${host}/api/`, {
       method: "POST",
       body: JSON.stringify(new_todo),
       headers: {

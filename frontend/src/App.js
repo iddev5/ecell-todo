@@ -8,7 +8,8 @@ function App() {
   useEffect(() => {
     setState("fetching-get");
     const fetchData = async () => {
-      const res = await fetch("/api/");
+      const host = process.env.REACT_APP_HOST || "";
+      const res = await fetch(`${host}/api/`);
       const json = await res.json();
       setTodos(json);
       setState("none");

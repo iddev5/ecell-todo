@@ -2,10 +2,8 @@
   "name": "todo",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "type": "module",
   "scripts": {
-    "server": "nodemon backend/server",
+    "server": "npm start --prefix backend",
     "client": "npm start --prefix frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -13,15 +11,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^4.19.2",
-    "express-async-handler": "^1.2.0",
-    "mongoose": "^8.4.0"
-  },
   "devDependencies": {
-    "concurrently": "^8.2.2",
-    "nodemon": "^3.1.2"
+    "concurrently": "^8.2.2"
   }
 }

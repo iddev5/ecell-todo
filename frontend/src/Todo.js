@@ -7,8 +7,10 @@ function Todo({ data, todos, setTodos }) {
   const titleRef = useRef(null);
   const descRef = useRef(null);
 
+  const host = process.env.REACT_APP_HOST || "";
+
   async function deleteTodo() {
-    await fetch("http://127.0.0.1:8080/api/" + data._id + "/", {
+    await fetch(`${host}/api/${data._id}/`, {
       method: "DELETE",
     });
 
@@ -25,7 +27,7 @@ function Todo({ data, todos, setTodos }) {
       desc: event.target.desc.value || data.desc,
     };
 
-    const res = await fetch(`/api/${data._id}/`, {
+    const res = await fetch(`${host}/api/${data._id}/`, {
       method: "PUT",
       body: JSON.stringify(form_data),
       headers: {
@@ -44,7 +46,7 @@ function Todo({ data, todos, setTodos }) {
   }
 
   async function markCompleted() {
-    const res = await fetch(`/api/${data._id}/`, {
+    const res = await fetch(`${host}/api/${data._id}/`, {
       method: "PUT",
       body: JSON.stringify({ completed: !complete }),
       headers: {
