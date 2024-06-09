@@ -21,6 +21,7 @@ function TodoList({ todos, setTodos, state, setState }) {
 
     if (new_todo.title === undefined || new_todo.title === "") {
       setEmptyTitleError(true);
+      setOnCreate(false);
       return;
     }
 

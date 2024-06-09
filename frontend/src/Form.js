@@ -8,7 +8,7 @@ function Form({
 }) {
   return (
     <>
-      {showSpinner && (
+      {showSpinner && !emptyTitle && (
         <div className="d-flex justify-content-center">
           <div className="text-center">
             <div
@@ -20,7 +20,7 @@ function Form({
           </div>
         </div>
       )}
-      {!showSpinner && (
+      {(!showSpinner || emptyTitle) && (
         <form onSubmit={onSubmit}>
           <div className="mb-3">
             <label className="form-label" htmlFor="title">
