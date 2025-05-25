@@ -3,7 +3,7 @@ import * as bootstrap from 'bootstrap/dist/js/bootstrap.min.js';
 import TodoList from "./TodoList.js";
 import Form from "./Form.js";
 import { useDispatch, useSelector } from "react-redux";
-import { addTodo, setTodo } from "./features/todoSlice.js";
+import { addTodo, setTodo, changeSortOrder } from "./features/todoSlice.js";
 
 function App() {
   const [addTodoState, setAddTodoState] = useState(false);
@@ -89,6 +89,18 @@ function App() {
               New
             </button>
           )}
+        </div>
+      </div>
+
+      <div className="container">
+        <div className="row row-cols-auto">
+          <p className="col">Sort by</p>
+          <div className="col">
+            <select onChange={(event) => dispatch(changeSortOrder(event.target.value))} className="form-select form-select-sm">
+              <option value="new" selected>Newest first</option>
+              <option value="old">Oldest first</option>
+            </select>
+          </div>
         </div>
       </div>
 
