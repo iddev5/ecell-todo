@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Form from "./Form.js";
 import { useDispatch } from "react-redux";
 import { deleteTodo, updateTodo, toggleComplete } from "./features/todoSlice.js";
@@ -10,6 +10,8 @@ function Todo({ data, todos, setTodos }) {
   const [onUpdate, setOnUpdate] = useState(false);
   const titleRef = useRef(null);
   const descRef = useRef(null);
+  const editModal = useRef(null);
+  const formRef = useRef(null);
   const dispatch = useDispatch();
 
   const host = process.env.REACT_APP_HOST || "";
@@ -70,34 +72,83 @@ function Todo({ data, todos, setTodos }) {
     setOnComplete(false);
   }
 
+  useEffect(() => {
+    editModal.current.addEventListener('hidden.bs.modal', async () => {
+      const form = formRef.current;
+      const title = form.elements['title'];
+      const desc = form.elements['desc'];
+      if (form && (title.value !== data.title || desc.value !== data.desc)) {
+        setOnUpdate(true);
+    
+        // TODO: OR-ing is not needed if below TODO is fixed
+        const form_data = {
+          title: title || data.title,
+          desc: desc || data.desc,
+        };
+    
+        // TODO: fix PUT returning old data
+        const res = await fetch(`${host}/api/${data._id}/`, {
+          method: "PUT",
+          body: JSON.stringify(form_data),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+    
+        dispatch(
+          updateTodo({
+            _id: data._id,
+            title: form_data.title,
+            desc: form_data.desc,
+          })
+        );
+    
+        setOnUpdate(false);
+      }
+    });
+  }, [])
+
   return (
     <div className="list-group-item">
 
-      <div class="modal fade" id={`editModal-${data._id}`} tabindex="-1" aria-labelledby={`editModalLabel-${data._id}`} aria-hidden="true">
+      <div ref={editModal} class="modal fade" id={`editModal-${data._id}`} tabindex="-1" aria-labelledby={`editModalLabel-${data._id}`} aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable"> 
           <div class="modal-content">
-            <div class="modal-header">
+            {/* TODO: will see */}
+            {/* <div class="modal-header">
               <h1 class="modal-title fs-5" id={`editModalLabel-${data._id}`}>Edit task</h1>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
+            </div> */}
             <div class="modal-body">
               <Form
                 onSubmit={updateTodoCb}
                 onCancel={() => setChange(false)}
+                formRef={formRef}
                 emptyTitle={false}
                 defaultTitle={data.title}
                 defaultDesc={data.desc}
-                showSpinner={onUpdate}
               />
             </div>
-            <div class="modal-footer">
-              {/* TODO: will see */}
-            </div>
+            {/* TODO: will see */}
+            {/* <div class="modal-footer">
+            </div> */}
           </div>
         </div>
       </div>
 
-
+      {onUpdate &&
+        <div className="d-flex justify-content-center">
+          <div className="text-center">
+            <div
+              className="spinner-border text-primary mt-2"
+              style={{ width: "2rem", height: "2rem" }}
+              role="status"
+            ></div>
+            <p>Please wait</p>
+          </div>
+        </div>
+      }
+      {!onUpdate &&
         <div className="container">
           <div className="row">
             <button className="col-1 p-0 btn" onClick={markCompletedCb} checked>
@@ -193,6 +244,7 @@ function Todo({ data, todos, setTodos }) {
             </button>
           </div>
         </div>
+      }
     </div>
   );
 }

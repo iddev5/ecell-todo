@@ -1,33 +1,20 @@
 function Form({
   onSubmit,
   onCancel,
+  formRef,
   emptyTitle,
   defaultTitle,
   defaultDesc,
-  showSpinner,
 }) {
   return (
     <>
-      {showSpinner && !emptyTitle && (
-        <div className="d-flex justify-content-center">
-          <div className="text-center">
-            <div
-              className="spinner-border text-primary mt-2"
-              style={{ width: "2rem", height: "2rem" }}
-              role="status"
-            ></div>
-            <p>Please wait</p>
-          </div>
-        </div>
-      )}
-      {(!showSpinner || emptyTitle) && (
-        <form onSubmit={onSubmit}>
+      {(
+        <form ref={formRef} onSubmit={onSubmit}>
+          {/* TODO: JUST A BACK ARROW NEVER HARM ANYONE, RIGHT? */}
           <div className="mb-3">
-            <label className="form-label" htmlFor="title">
-              Title
-            </label>
             <input
-              className="form-control"
+              className="form-control focus-ring border-0 fs-3"
+              style={{ boxShadow: 'none', outline: 'none' }}
               type="text"
               name="title"
               id="title"
@@ -39,29 +26,14 @@ function Form({
               <p>*Blank title is not allowed</p>
             </div>
           )}
-          <div className="mb-3">
-            <label className="form-label" htmlFor="desc">
-              Description
-            </label>
+          <div className="mb-3 pt-2 border-top">
             <textarea
-              className="form-control"
+              className="form-control focus-ring border-0"
+              style={{ boxShadow: 'none', outline: 'none', height: '70vh' }}
               name="desc"
               id="desc"
               defaultValue={defaultDesc}
             />
-          </div>
-          <div className="">
-            <button
-              className="btn btn-primary mx-2"
-              type="submit"
-              value="submit"
-              data-bs-dismiss="modal" data-bs-target="#editModal"
-            >
-              Done
-            </button>
-            <button className="btn btn-secondary" onClick={onCancel} data-bs-dismiss="modal" data-bs-target="#editModal">
-              Cancel
-            </button>
           </div>
         </form>
       )}
