@@ -10,6 +10,7 @@ function App() {
   const [emptyTitleError, setEmptyTitleError] = useState(false);
   const [onCreate, setOnCreate] = useState(false);
   const [state, setState] = useState("none");
+  const [newEmptyTask, setNewEmptyTask] = useState(false);
 
   const todos = useSelector((state) => state.todos.todos);
   const dispatch = useDispatch();
@@ -71,6 +72,36 @@ function App() {
     })
   })
 
+  const createBlankTodo = async (event) => {
+    event.preventDefault();
+
+    setNewEmptyTask(true);
+
+    const title = event.target.title.value;
+    if (title === undefined || title === "")
+      return;
+
+    const new_todo = {
+      title: title,
+      desc: "",
+    };
+
+    const returned_todo = await fetch(`${host}/api/`, {
+      method: "POST",
+      body: JSON.stringify(new_todo),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const content = await returned_todo.json();
+    dispatch(addTodo(content));
+
+    event.target.title.value = "";
+
+    setNewEmptyTask(false);
+  }
+
   return <>
     <div className="container">
       <div className="navbar navbar-expand-lg bg-body-tertiary">
@@ -116,17 +147,20 @@ function App() {
         </li>
       </ul>
       <div class="tab-content">
-        {addTodoState && (
+        {newEmptyTask && (
         <div className="list-group">
           <div className="list-group-item">
-            <Form
-              onSubmit={createTodo}
-              onCancel={() => setAddTodoState(false)}
-              emptyTitle={emptyTitleError}
-              defaultTitle=""
-              defaultDesc=""
-              showSpinner={onCreate}
-            />
+            {/* TODO: its copied from Todo.js, deduplicate it somehow */}
+            <div className="d-flex justify-content-center">
+              <div className="text-center">
+                <div
+                  className="spinner-border text-primary mt-2"
+                  style={{ width: "2rem", height: "2rem" }}
+                  role="status"
+                ></div>
+                <p>Please wait</p>
+              </div>
+            </div>
           </div>
         </div>
         )}       
@@ -145,6 +179,27 @@ function App() {
         )
         }
       </div>
+
+      <nav className="navbar fixed-bottom navbar-light bg-light container">
+        <div className="container-fluid">
+          <form onSubmit={createBlankTodo} className="w-100">
+            <div className="input-group">
+              <input
+                className="form-control"
+                type="text"
+                name="title"
+                placeholder="Add title..."
+              />
+              <button
+                className="btn btn-primary"
+                type="submit"
+              >
+                Done
+              </button>
+            </div>
+          </form>
+        </div>
+      </nav>
     </div>
   </>;
 }
