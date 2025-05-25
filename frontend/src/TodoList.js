@@ -1,64 +1,8 @@
-import { useState, useEffect } from "react";
 import Todo from "./Todo.js";
-import Form from "./Form.js";
 
-function TodoList({ todos, setTodos, state, setState }) {
-  const [addTodo, setAddTodo] = useState(false);
-  const [onCreate, setOnCreate] = useState(false);
-  const [emptyTitleError, setEmptyTitleError] = useState(false);
-
-  const host = process.env.REACT_APP_HOST || "";
-
-  async function createTodo(event) {
-    event.preventDefault();
-
-    setOnCreate(true);
-
-    const new_todo = {
-      title: event.target.title.value,
-      desc: event.target.desc.value,
-    };
-
-    if (new_todo.title === undefined || new_todo.title === "") {
-      setEmptyTitleError(true);
-      setOnCreate(false);
-      return;
-    }
-
-    const returned_todo = await fetch(`${host}/api/`, {
-      method: "POST",
-      body: JSON.stringify(new_todo),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    const content = await returned_todo.json();
-    setTodos([...todos, content]);
-    setAddTodo(false);
-    setOnCreate(false);
-  }
-
+function TodoList({ todos, setTodos, state, addTodoState }) {
   return (
-    <div className="container">
-      <div className="navbar navbar-expand-lg bg-body-tertiary">
-        <div className="container-fluid">
-          <a className="navbar-brand" href="#">
-            Todo List
-          </a>
-          {!addTodo && (
-            <button
-              className="btn btn-primary"
-              onClick={() => {
-                setAddTodo(true);
-                setEmptyTitleError(false);
-              }}
-            >
-              New
-            </button>
-          )}
-        </div>
-      </div>
+    <div>
       {state === "fetching-get" && (
         <div className="d-flex justify-content-center">
           <div className="text-center">
@@ -76,7 +20,7 @@ function TodoList({ todos, setTodos, state, setState }) {
         {todos.map((todo) => (
           <Todo key={todo._id} data={todo} todos={todos} setTodos={setTodos} />
         ))}
-        {todos.length === 0 && state !== "fetching-get" && !addTodo && (
+        {todos.length === 0 && state !== "fetching-get" && !addTodoState && (
           <div className="text-center" style={{ "margin-top": "10em" }}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -91,18 +35,6 @@ function TodoList({ todos, setTodos, state, setState }) {
             </svg>
             <h2>No todos found...</h2>
             <p>Click on the New button</p>
-          </div>
-        )}
-        {addTodo && (
-          <div className="list-group-item">
-            <Form
-              onSubmit={createTodo}
-              onCancel={() => setAddTodo(false)}
-              emptyTitle={emptyTitleError}
-              defaultTitle=""
-              defaultDesc=""
-              showSpinner={onCreate}
-            />
           </div>
         )}
       </div>
