@@ -50,7 +50,6 @@ function Todo({ data, todos, setTodos }) {
       })
     );
 
-    setChange(false);
     setOnUpdate(false);
   }
 
@@ -73,19 +72,32 @@ function Todo({ data, todos, setTodos }) {
 
   return (
     <div className="list-group-item">
-      {change && (
-        <div>
-          <Form
-            onSubmit={updateTodoCb}
-            onCancel={() => setChange(false)}
-            emptyTitle={false}
-            defaultTitle={data.title}
-            defaultDesc={data.desc}
-            showSpinner={onUpdate}
-          />
+
+      <div class="modal fade" id={`editModal-${data._id}`} tabindex="-1" aria-labelledby={`editModalLabel-${data._id}`} aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable"> 
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id={`editModalLabel-${data._id}`}>Edit task</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <Form
+                onSubmit={updateTodoCb}
+                onCancel={() => setChange(false)}
+                emptyTitle={false}
+                defaultTitle={data.title}
+                defaultDesc={data.desc}
+                showSpinner={onUpdate}
+              />
+            </div>
+            <div class="modal-footer">
+              {/* TODO: will see */}
+            </div>
+          </div>
         </div>
-      )}
-      {!change && (
+      </div>
+
+
         <div className="container">
           <div className="row">
             <button className="col-1 p-0 btn" onClick={markCompletedCb} checked>
@@ -128,7 +140,7 @@ function Todo({ data, todos, setTodos }) {
             </button>
             <button
               ref={titleRef}
-              className="col fs-4 text-start border-0 bg-transparent"
+              className="col fs-4 text-start border-0 bg-transparent text-truncate"
               style={
                 complete
                   ? {
@@ -138,7 +150,8 @@ function Todo({ data, todos, setTodos }) {
                     }
                   : {}
               }
-              onClick={() => setChange(true)}
+              data-bs-toggle="modal" 
+              data-bs-target={`#editModal-${data._id}`}
             >
               {data.title}
             </button>
@@ -163,7 +176,7 @@ function Todo({ data, todos, setTodos }) {
             <div className="col-1"></div>
             <button
               ref={descRef}
-              className="col text-start border-0 bg-transparent"
+              className="col text-start border-0 bg-transparent text-truncate"
               style={
                 complete
                   ? {
@@ -173,13 +186,13 @@ function Todo({ data, todos, setTodos }) {
                     }
                   : {}
               }
-              onClick={() => setChange(true)}
+              data-bs-toggle="modal" 
+              data-bs-target={`#editModal-${data._id}`}
             >
               {data.desc}
             </button>
           </div>
         </div>
-      )}
     </div>
   );
 }

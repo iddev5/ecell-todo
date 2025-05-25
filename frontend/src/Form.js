@@ -55,10 +55,11 @@ function Form({
               className="btn btn-primary mx-2"
               type="submit"
               value="submit"
+              data-bs-dismiss="modal" data-bs-target="#editModal"
             >
               Done
             </button>
-            <button className="btn btn-secondary" onClick={onCancel}>
+            <button className="btn btn-secondary" onClick={onCancel} data-bs-dismiss="modal" data-bs-target="#editModal">
               Cancel
             </button>
           </div>
