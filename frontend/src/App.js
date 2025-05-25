@@ -48,7 +48,14 @@ function App() {
       const host = process.env.REACT_APP_HOST || "";
       const res = await fetch(`${host}/api/`);
       const json = await res.json();
-      setTodos(json);
+
+      const completes = json.filter(todo => todo.completed === true);
+      const incompletes = json.filter(todo => todo.completed === false);
+
+      completes.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+      incompletes.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+
+      setTodos([...incompletes, ...completes]);
       setState("none");
     };
 
@@ -99,6 +106,7 @@ function App() {
       </ul>
       <div class="tab-content">
         {addTodo && (
+        <div className="list-group">
           <div className="list-group-item">
             <Form
               onSubmit={createTodo}
@@ -109,6 +117,7 @@ function App() {
               showSpinner={onCreate}
             />
           </div>
+        </div>
         )}       
         {[
           ['all', (todo) => true],
