@@ -86,19 +86,6 @@ function App() {
         </div>
       </div>
 
-      {addTodo && (
-        <div className="list-group-item">
-          <Form
-            onSubmit={createTodo}
-            onCancel={() => setAddTodo(false)}
-            emptyTitle={emptyTitleError}
-            defaultTitle=""
-            defaultDesc=""
-            showSpinner={onCreate}
-          />
-        </div>
-      )}
-
       <ul id="menu" className="nav nav-tabs">
         <li className="nav-item">
           <a className="nav-link active" data-bs-target="#all">All</a>
@@ -111,30 +98,33 @@ function App() {
         </li>
       </ul>
       <div class="tab-content">
-        <div id="all" className="tab-pane active">
-          <TodoList
-            todos={todos}
-            setTodos={setTodos}
-            state={state}
-            addTodoState={addTodo}
-          />
-        </div>
-        <div id="done" className="tab-pane">
-          <TodoList
-            todos={todos.filter((todo) => todo.completed === true)}
-            setTodos={setTodos}
-            state={state}            
-            addTodoState={addTodo}
-          />
-        </div>
-        <div id="inprog" className="tab-pane">
-          <TodoList
-            todos={todos.filter((todo) => todo.completed === false)}
-            setTodos={setTodos}
-            state={state}
-            addTodoState={addTodo}
-          />
-        </div>
+        {addTodo && (
+          <div className="list-group-item">
+            <Form
+              onSubmit={createTodo}
+              onCancel={() => setAddTodo(false)}
+              emptyTitle={emptyTitleError}
+              defaultTitle=""
+              defaultDesc=""
+              showSpinner={onCreate}
+            />
+          </div>
+        )}       
+        {[
+          ['all', (todo) => true],
+          ['done', (todo) => todo.completed === true], 
+          ['inprog', (todo) => todo.completed === false],
+        ].map((tab, index) =>
+          <div id={tab[0]} className={`tab-pane ${index === 0 ? 'active' : ''}`} key={tab[0]}>
+            <TodoList
+              todos={todos.filter(tab[1])}
+              setTodos={setTodos}
+              state={state}
+              addTodoState={addTodo}
+            />
+          </div>
+        )
+        }
       </div>
     </div>
   </>;
