@@ -1,8 +1,8 @@
 import Todo from "./Todo.js";
 
-function TodoList({ todos, state, addTodoState }) {
+function TodoList({ todos, state }) {
   return (
-    <div>
+    <div className="mb-5">
       {state === "fetching-get" && (
         <div className="d-flex justify-content-center">
           <div className="text-center">
@@ -20,7 +20,7 @@ function TodoList({ todos, state, addTodoState }) {
         {todos.map((todo) => (
           <Todo key={todo._id} data={todo} />
         ))}
-        {todos.length === 0 && state !== "fetching-get" && !addTodoState && (
+        {todos.length === 0 && state !== "fetching-get" && (
           <div className="text-center" style={{ "margin-top": "10em" }}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -34,7 +34,7 @@ function TodoList({ todos, state, addTodoState }) {
               <path d="M9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.5zm0 1v2A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z" />
             </svg>
             <h2>No todos found...</h2>
-            <p>Click on the New button</p>
+            <p>Create a task to get started!</p>
           </div>
         )}
       </div>

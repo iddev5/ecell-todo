@@ -6,9 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { addTodo, setTodo, changeSortOrder } from "./features/todoSlice.js";
 
 function App() {
-  const [addTodoState, setAddTodoState] = useState(false);
-  const [emptyTitleError, setEmptyTitleError] = useState(false);
-  const [onCreate, setOnCreate] = useState(false);
   const [state, setState] = useState("none");
   const [newEmptyTask, setNewEmptyTask] = useState(false);
 
@@ -16,37 +13,6 @@ function App() {
   const dispatch = useDispatch();
 
   const host = process.env.REACT_APP_HOST || "";
-
-  async function createTodo(event) {
-    event.preventDefault();
-
-    setOnCreate(true);
-
-    const new_todo = {
-      title: event.target.title.value,
-      desc: event.target.desc.value,
-    };
-
-    if (new_todo.title === undefined || new_todo.title === "") {
-      setEmptyTitleError(true);
-      setOnCreate(false);
-      return;
-    }
-
-    const returned_todo = await fetch(`${host}/api/`, {
-      method: "POST",
-      body: JSON.stringify(new_todo),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    const content = await returned_todo.json();
-    dispatch(addTodo(content));
-
-    setAddTodoState(false);
-    setOnCreate(false);
-  }
 
   useEffect(() => {
     setState("fetching-get");
@@ -109,17 +75,6 @@ function App() {
           <a className="navbar-brand" href="#">
             Todo List
           </a>
-          {!addTodoState && (
-            <button
-              className="btn btn-primary"
-              onClick={() => {
-                setAddTodoState(true);
-                setEmptyTitleError(false);
-              }}
-            >
-              New
-            </button>
-          )}
         </div>
       </div>
 
@@ -173,7 +128,6 @@ function App() {
             <TodoList
               todos={todos.filter(tab[1])}
               state={state}
-              addTodoState={addTodoState}
             />
           </div>
         )
