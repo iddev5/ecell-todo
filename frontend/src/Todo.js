@@ -1,5 +1,7 @@
 import { useState, useRef } from "react";
 import Form from "./Form.js";
+import { useDispatch } from "react-redux";
+import { deleteTodo, updateTodo, toggleComplete } from "./features/todoSlice.js";
 
 function Todo({ data, todos, setTodos }) {
   const [change, setChange] = useState(false);
@@ -8,19 +10,19 @@ function Todo({ data, todos, setTodos }) {
   const [onUpdate, setOnUpdate] = useState(false);
   const titleRef = useRef(null);
   const descRef = useRef(null);
+  const dispatch = useDispatch();
 
   const host = process.env.REACT_APP_HOST || "";
 
-  async function deleteTodo() {
+  async function deleteTodoCb() {
     await fetch(`${host}/api/${data._id}/`, {
       method: "DELETE",
     });
 
-    const newTodos = todos.filter((it) => it._id !== data._id);
-    setTodos(newTodos);
+    dispatch(deleteTodo(data._id));
   }
 
-  async function updateTodo(event) {
+  async function updateTodoCb(event) {
     event.preventDefault();
 
     setOnUpdate(true);
@@ -31,6 +33,7 @@ function Todo({ data, todos, setTodos }) {
       desc: event.target.desc.value || data.desc,
     };
 
+    // TODO: fix PUT returning old data
     const res = await fetch(`${host}/api/${data._id}/`, {
       method: "PUT",
       body: JSON.stringify(form_data),
@@ -39,18 +42,19 @@ function Todo({ data, todos, setTodos }) {
       },
     });
 
-    const idx = todos.findIndex((it) => data._id === it._id);
-    const new_todos = todos.slice();
-    // TODO: fix PUT returning old data
-    new_todos[idx].title = form_data.title;
-    new_todos[idx].desc = form_data.desc;
+    dispatch(
+      updateTodo({
+        _id: data._id,
+        title: form_data.title,
+        desc: form_data.desc,
+      })
+    );
 
-    setTodos(new_todos);
     setChange(false);
     setOnUpdate(false);
   }
 
-  async function markCompleted() {
+  async function markCompletedCb() {
     setOnComplete(true);
 
     const res = await fetch(`${host}/api/${data._id}/`, {
@@ -61,6 +65,8 @@ function Todo({ data, todos, setTodos }) {
       },
     });
 
+    dispatch(toggleComplete(data._id));
+    
     setComplete(!complete);
     setOnComplete(false);
   }
@@ -70,7 +76,7 @@ function Todo({ data, todos, setTodos }) {
       {change && (
         <div>
           <Form
-            onSubmit={updateTodo}
+            onSubmit={updateTodoCb}
             onCancel={() => setChange(false)}
             emptyTitle={false}
             defaultTitle={data.title}
@@ -82,7 +88,7 @@ function Todo({ data, todos, setTodos }) {
       {!change && (
         <div className="container">
           <div className="row">
-            <button className="col-1 p-0 btn" onClick={markCompleted} checked>
+            <button className="col-1 p-0 btn" onClick={markCompletedCb} checked>
               {onComplete && (
                 <div className="d-flex justify-content-center">
                   <div className="text-center">
@@ -138,7 +144,7 @@ function Todo({ data, todos, setTodos }) {
             </button>
             <button
               className="col-1 btn text-danger p-2 opacity-100"
-              onClick={deleteTodo}
+              onClick={deleteTodoCb}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

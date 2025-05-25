@@ -1,6 +1,6 @@
 import Todo from "./Todo.js";
 
-function TodoList({ todos, setTodos, state, addTodoState }) {
+function TodoList({ todos, state, addTodoState }) {
   return (
     <div>
       {state === "fetching-get" && (
@@ -18,7 +18,7 @@ function TodoList({ todos, setTodos, state, addTodoState }) {
       )}
       <div className="list-group">
         {todos.map((todo) => (
-          <Todo key={todo._id} data={todo} todos={todos} setTodos={setTodos} />
+          <Todo key={todo._id} data={todo} />
         ))}
         {todos.length === 0 && state !== "fetching-get" && !addTodoState && (
           <div className="text-center" style={{ "margin-top": "10em" }}>

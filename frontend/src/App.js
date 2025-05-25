@@ -2,13 +2,17 @@ import { useState, useEffect } from "react";
 import * as bootstrap from 'bootstrap/dist/js/bootstrap.min.js';
 import TodoList from "./TodoList.js";
 import Form from "./Form.js";
+import { useDispatch, useSelector } from "react-redux";
+import { addTodo, setTodo } from "./features/todoSlice.js";
 
 function App() {
-  const [addTodo, setAddTodo] = useState(false);
+  const [addTodoState, setAddTodoState] = useState(false);
   const [emptyTitleError, setEmptyTitleError] = useState(false);
   const [onCreate, setOnCreate] = useState(false);
   const [state, setState] = useState("none");
-  const [todos, setTodos] = useState([]);
+
+  const todos = useSelector((state) => state.todos.todos);
+  const dispatch = useDispatch();
 
   const host = process.env.REACT_APP_HOST || "";
 
@@ -37,8 +41,9 @@ function App() {
     });
 
     const content = await returned_todo.json();
-    setTodos([...todos, content]);
-    setAddTodo(false);
+    dispatch(addTodo(content));
+
+    setAddTodoState(false);
     setOnCreate(false);
   }
 
@@ -49,13 +54,7 @@ function App() {
       const res = await fetch(`${host}/api/`);
       const json = await res.json();
 
-      const completes = json.filter(todo => todo.completed === true);
-      const incompletes = json.filter(todo => todo.completed === false);
-
-      completes.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
-      incompletes.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
-
-      setTodos([...incompletes, ...completes]);
+      dispatch(setTodo(json));
       setState("none");
     };
 
@@ -79,11 +78,11 @@ function App() {
           <a className="navbar-brand" href="#">
             Todo List
           </a>
-          {!addTodo && (
+          {!addTodoState && (
             <button
               className="btn btn-primary"
               onClick={() => {
-                setAddTodo(true);
+                setAddTodoState(true);
                 setEmptyTitleError(false);
               }}
             >
@@ -105,12 +104,12 @@ function App() {
         </li>
       </ul>
       <div class="tab-content">
-        {addTodo && (
+        {addTodoState && (
         <div className="list-group">
           <div className="list-group-item">
             <Form
               onSubmit={createTodo}
-              onCancel={() => setAddTodo(false)}
+              onCancel={() => setAddTodoState(false)}
               emptyTitle={emptyTitleError}
               defaultTitle=""
               defaultDesc=""
@@ -127,9 +126,8 @@ function App() {
           <div id={tab[0]} className={`tab-pane ${index === 0 ? 'active' : ''}`} key={tab[0]}>
             <TodoList
               todos={todos.filter(tab[1])}
-              setTodos={setTodos}
               state={state}
-              addTodoState={addTodo}
+              addTodoState={addTodoState}
             />
           </div>
         )
