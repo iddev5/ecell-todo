@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect } from "react";
 import Form from "./Form.js";
 import { useDispatch } from "react-redux";
-import { deleteTodo, updateTodo, toggleComplete } from "./features/todoSlice.js";
+import { updateTodo, toggleComplete } from "./features/todoSlice.js";
+import api from "./api.js";
 
 function Todo({ data, todos, setTodos }) {
-  const [change, setChange] = useState(false);
   const [complete, setComplete] = useState(data.completed);
   const [onComplete, setOnComplete] = useState(false);
   const [onUpdate, setOnUpdate] = useState(false);
@@ -16,57 +16,14 @@ function Todo({ data, todos, setTodos }) {
 
   const host = process.env.REACT_APP_HOST || "";
 
-  async function deleteTodoCb() {
-    await fetch(`${host}/api/${data._id}/`, {
-      method: "DELETE",
-    });
-
-    dispatch(deleteTodo(data._id));
-  }
-
-  async function updateTodoCb(event) {
-    event.preventDefault();
-
-    setOnUpdate(true);
-
-    // TODO: OR-ing is not needed if below TODO is fixed
-    const form_data = {
-      title: event.target.title.value || data.title,
-      desc: event.target.desc.value || data.desc,
-    };
-
-    // TODO: fix PUT returning old data
-    const res = await fetch(`${host}/api/${data._id}/`, {
-      method: "PUT",
-      body: JSON.stringify(form_data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    dispatch(
-      updateTodo({
-        _id: data._id,
-        title: form_data.title,
-        desc: form_data.desc,
-      })
-    );
-
-    setOnUpdate(false);
+  function deleteTodoCb() {
+    dispatch(api.deleteTodo(data._id));
   }
 
   async function markCompletedCb() {
     setOnComplete(true);
 
-    const res = await fetch(`${host}/api/${data._id}/`, {
-      method: "PUT",
-      body: JSON.stringify({ completed: !complete }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    dispatch(toggleComplete(data._id));
+    dispatch(api.markCompleted(data._id, !complete));
     
     setComplete(!complete);
     setOnComplete(false);
@@ -85,23 +42,8 @@ function Todo({ data, todos, setTodos }) {
           title: title || data.title,
           desc: desc || data.desc,
         };
-    
-        // TODO: fix PUT returning old data
-        const res = await fetch(`${host}/api/${data._id}/`, {
-          method: "PUT",
-          body: JSON.stringify(form_data),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-    
-        dispatch(
-          updateTodo({
-            _id: data._id,
-            title: form_data.title,
-            desc: form_data.desc,
-          })
-        );
+
+        dispatch(api.updateTodo(data._id, form_data));
     
         setOnUpdate(false);
       }
@@ -121,8 +63,6 @@ function Todo({ data, todos, setTodos }) {
             </div> */}
             <div class="modal-body">
               <Form
-                onSubmit={updateTodoCb}
-                onCancel={() => setChange(false)}
                 formRef={formRef}
                 emptyTitle={false}
                 defaultTitle={data.title}

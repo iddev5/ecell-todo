@@ -1,6 +1,4 @@
 function Form({
-  onSubmit,
-  onCancel,
   formRef,
   emptyTitle,
   defaultTitle,
@@ -9,7 +7,7 @@ function Form({
   return (
     <>
       {(
-        <form ref={formRef} onSubmit={onSubmit}>
+        <form ref={formRef}>
           {/* TODO: JUST A BACK ARROW NEVER HARM ANYONE, RIGHT? */}
           <div className="mb-3">
             <input

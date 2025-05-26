@@ -4,6 +4,7 @@ import TodoList from "./TodoList.js";
 import Form from "./Form.js";
 import { useDispatch, useSelector } from "react-redux";
 import { addTodo, setTodo, changeSortOrder } from "./features/todoSlice.js";
+import api from "./api.js";
 
 function App() {
   const [state, setState] = useState("none");
@@ -16,16 +17,8 @@ function App() {
 
   useEffect(() => {
     setState("fetching-get");
-    const fetchData = async () => {
-      const host = process.env.REACT_APP_HOST || "";
-      const res = await fetch(`${host}/api/`);
-      const json = await res.json();
-
-      dispatch(setTodo(json));
-      setState("none");
-    };
-
-    fetchData();
+    dispatch(api.getTodos())
+    setState("none");
   }, []);
 
   const triggerTabList = document.querySelectorAll("#menu a");
@@ -40,29 +33,9 @@ function App() {
 
   const createBlankTodo = async (event) => {
     event.preventDefault();
-
     setNewEmptyTask(true);
 
-    const title = event.target.title.value;
-    if (title === undefined || title === "")
-      return;
-
-    const new_todo = {
-      title: title,
-      desc: "",
-    };
-
-    const returned_todo = await fetch(`${host}/api/`, {
-      method: "POST",
-      body: JSON.stringify(new_todo),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    const content = await returned_todo.json();
-    dispatch(addTodo(content));
-
+    dispatch(api.createTodo(event.target.title.value));
     event.target.title.value = "";
 
     setNewEmptyTask(false);
