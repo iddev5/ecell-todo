@@ -39,8 +39,8 @@ function Todo({ data, todos, setTodos }) {
     
         // TODO: OR-ing is not needed if below TODO is fixed
         const form_data = {
-          title: title || data.title,
-          desc: desc || data.desc,
+          title: title.value || data.title,
+          desc: desc.value || data.desc,
         };
 
         dispatch(api.updateTodo(data._id, form_data));
