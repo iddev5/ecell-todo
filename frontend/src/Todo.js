@@ -1,10 +1,9 @@
 import { useState, useRef, useEffect } from "react";
 import Form from "./Form.js";
 import { useDispatch } from "react-redux";
-import { updateTodo, toggleComplete } from "./features/todoSlice.js";
 import api from "./api.js";
 
-function Todo({ data, todos, setTodos }) {
+function Todo({ data }) {
   const [complete, setComplete] = useState(data.completed);
   const [onComplete, setOnComplete] = useState(false);
   const [onUpdate, setOnUpdate] = useState(false);
@@ -24,19 +23,19 @@ function Todo({ data, todos, setTodos }) {
     setOnComplete(true);
 
     dispatch(api.markCompleted(data._id, !complete));
-    
+
     setComplete(!complete);
     setOnComplete(false);
   }
 
   useEffect(() => {
-    editModal.current.addEventListener('hidden.bs.modal', async () => {
+    editModal.current.addEventListener("hidden.bs.modal", async () => {
       const form = formRef.current;
-      const title = form.elements['title'];
-      const desc = form.elements['desc'];
+      const title = form.elements["title"];
+      const desc = form.elements["desc"];
       if (form && (title.value !== data.title || desc.value !== data.desc)) {
         setOnUpdate(true);
-    
+
         // TODO: OR-ing is not needed if below TODO is fixed
         const form_data = {
           title: title.value || data.title,
@@ -44,17 +43,23 @@ function Todo({ data, todos, setTodos }) {
         };
 
         dispatch(api.updateTodo(data._id, form_data));
-    
+
         setOnUpdate(false);
       }
     });
-  }, [])
+  }, []);
 
   return (
     <div className="list-group-item">
-
-      <div ref={editModal} class="modal fade" id={`editModal-${data._id}`} tabindex="-1" aria-labelledby={`editModalLabel-${data._id}`} aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable"> 
+      <div
+        ref={editModal}
+        class="modal fade"
+        id={`editModal-${data._id}`}
+        tabindex="-1"
+        aria-labelledby={`editModalLabel-${data._id}`}
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
           <div class="modal-content">
             {/* TODO: will see */}
             {/* <div class="modal-header">
@@ -76,7 +81,7 @@ function Todo({ data, todos, setTodos }) {
         </div>
       </div>
 
-      {onUpdate &&
+      {onUpdate && (
         <div className="d-flex justify-content-center">
           <div className="text-center">
             <div
@@ -87,8 +92,8 @@ function Todo({ data, todos, setTodos }) {
             <p>Please wait</p>
           </div>
         </div>
-      }
-      {!onUpdate &&
+      )}
+      {!onUpdate && (
         <div className="container">
           <div className="row">
             <button className="col-1 p-0 btn" onClick={markCompletedCb} checked>
@@ -141,7 +146,7 @@ function Todo({ data, todos, setTodos }) {
                     }
                   : {}
               }
-              data-bs-toggle="modal" 
+              data-bs-toggle="modal"
               data-bs-target={`#editModal-${data._id}`}
             >
               {data.title}
@@ -177,14 +182,14 @@ function Todo({ data, todos, setTodos }) {
                     }
                   : {}
               }
-              data-bs-toggle="modal" 
+              data-bs-toggle="modal"
               data-bs-target={`#editModal-${data._id}`}
             >
               {data.desc}
             </button>
           </div>
         </div>
-      }
+      )}
     </div>
   );
 }
