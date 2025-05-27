@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import * as bootstrap from "bootstrap/dist/js/bootstrap.min.js";
 import TodoList from "./TodoList.js";
+import { ArrowRight, Mic, Funnel, ChartColumnIncreasing } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { changeSortOrder } from "./features/todoSlice.js";
 import api from "./api.js";
@@ -49,42 +50,57 @@ function App() {
           </div>
         </div>
 
+        
+        
         <div className="container">
           <div className="row row-cols-auto">
-            <p className="col">Sort by</p>
+
             <div className="col">
-              <select
-                onChange={(event) =>
-                  dispatch(changeSortOrder(event.target.value))
-                }
-                className="form-select form-select-sm"
-              >
-                <option value="new" selected>
-                  Newest first
-                </option>
-                <option value="old">Oldest first</option>
-              </select>
+              <ul id="menu" className="nav nav-tabs">
+                <li className="nav-item">
+                  <a className="nav-link active" data-bs-target="#all">
+                    All
+                  </a>
+                </li>
+                <li className="nav-item">
+                  <a className="nav-link" data-bs-target="#done">
+                    Done
+                  </a>
+                </li>
+                <li className="nav-item">
+                  <a className="nav-link" data-bs-target="#inprog">
+                    In-progress
+                  </a>
+                </li>
+              </ul>
             </div>
+
+            <div className="col container">
+              <div className="row row-cols-auto">
+                <span className='col'>
+                  <ChartColumnIncreasing />
+                </span>
+                <span className="col">
+                  <Funnel size={20} />
+                </span>
+                <div className="col">
+                  <select
+                    onChange={(event) =>
+                      dispatch(changeSortOrder(event.target.value))
+                    }
+                    className="form-select form-select-sm"
+                  >
+                    <option value="new" selected>
+                      Newest first
+                    </option>
+                    <option value="old">Oldest first</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
-
-        <ul id="menu" className="nav nav-tabs">
-          <li className="nav-item">
-            <a className="nav-link active" data-bs-target="#all">
-              All
-            </a>
-          </li>
-          <li className="nav-item">
-            <a className="nav-link" data-bs-target="#done">
-              Done
-            </a>
-          </li>
-          <li className="nav-item">
-            <a className="nav-link" data-bs-target="#inprog">
-              In-progress
-            </a>
-          </li>
-        </ul>
         <div class="tab-content">
           {newEmptyTask && (
             <div className="list-group">
@@ -129,8 +145,11 @@ function App() {
                   placeholder="Add title..."
                 />
                 <button className="btn btn-primary" type="submit">
-                  Done
+                  <ArrowRight />
                 </button>
+                {/* <button className="btn" type="button">
+                  <Mic />
+                </button> */}
               </div>
             </form>
           </div>
