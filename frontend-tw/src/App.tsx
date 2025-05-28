@@ -154,20 +154,24 @@ export default function App() {
       <div className="w-[40vw] min-h-screen h-full pb-26 shadow-lg">
         <Tabs defaultValue="all">
           <Options />
-          <TabsContent value="all">
-            <div className="flex flex-col gap-1">
-              {todos.map((todo: TodoType) => (
-                <Todo
-                  key={todo._id}
-                  title={todo.title}
-                  desc={todo.desc}
-                  completed={todo.completed}
-                />
-              ))}
-            </div>
-          </TabsContent>
-          <TabsContent value="done">Change your password here.</TabsContent>
-          <TabsContent value="inprog">Change your password here.</TabsContent>
+          {[
+            ["all", (todo: TodoType) => true],
+            ["done", (todo: TodoType) => todo.completed === true],
+            ["inprog", (todo: TodoType) => todo.completed === false],
+          ].map((tab) => (
+            <TabsContent value={tab[0] as string}>
+              <div className="flex flex-col gap-1">
+                {todos.filter(tab[1] as () => boolean).map((todo: TodoType) => (
+                  <Todo
+                    key={todo._id}
+                    title={todo.title}
+                    desc={todo.desc}
+                    completed={todo.completed}
+                  />
+                ))}
+              </div>
+            </TabsContent>                
+          ))}
         </Tabs>
       </div>
     </section>
