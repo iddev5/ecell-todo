@@ -8,8 +8,16 @@ import {
 import { Button } from "@/components/ui/button"
 import { TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ChartColumnIncreasing, Funnel } from "lucide-react"
+import { useAppDispatch } from "@/lib/store"
+import { changeSortOrder } from "@/features/todoSlice"
 
 export default function Options() {
+    const dispatch = useAppDispatch();
+    
+    const onSort = (e: string) => {
+        dispatch(changeSortOrder(e));
+    }
+
     return (
         <div className="w-full p-4 border-b-1 border-grey-200 flex justify-between items-center">
             <div>
@@ -24,7 +32,7 @@ export default function Options() {
                     <ChartColumnIncreasing />
                 </Button>
                 <Funnel className="opacity-50" />
-                <Select>
+                <Select onValueChange={onSort}>
                     <SelectTrigger className="w-[130px]">
                         <SelectValue placeholder="Sort by" />
                     </SelectTrigger>
