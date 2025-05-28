@@ -27,13 +27,19 @@ const editFormSchema = z.object({
   desc: z.string().optional(),
 });
 
-function EditForm(props: {title: string, desc: string}) {
+function EditForm(props: {id: string, title: string, desc: string}) {
+  const dispatch = useAppDispatch();
+
   // TODO: validation
   const [titleProp, setTitleProp] = useState(props.title);
   const [descProp, setDescProp] = useState(props.desc);
 
   const onSubmit = (data: z.infer<typeof editFormSchema>) => {
-    console.log(data);
+    if (data.title !== props.title || data.desc !== props.desc)
+      dispatch(api.updateTodo(props.id, {
+        title: data.title,
+        desc: data.desc || '',
+      }));
   }
 
   const onOpenChange = (open: boolean) => {
@@ -73,11 +79,21 @@ function EditForm(props: {title: string, desc: string}) {
   )
 }
 
-function Todo(props: { title: string; desc: string, completed: boolean }) {
+function Todo(props: { id: string, title: string; desc: string, completed: boolean }) {
+  const dispatch = useAppDispatch();
+
+  const onComplete = () => {
+    dispatch(api.markCompleted(props.id, !props.completed));
+  };
+
+  const onDelete = () => {
+    dispatch(api.deleteTodo(props.id));
+  }
+
   return (
     <div className="m-2 my-1 p-4 flex justify-between items-center rounded-lg border-1 border-gray-200">
       <div className="flex items-center flex-1">
-        <Button variant="ghost" className="rounded-full">
+        <Button variant="ghost" onClick={onComplete} className="rounded-full">
           {!props.completed &&
             <Circle />
           }
@@ -85,9 +101,9 @@ function Todo(props: { title: string; desc: string, completed: boolean }) {
             <CircleCheckBig />
           }
         </Button>
-        <EditForm title={props.title} desc={props.desc} />
+        <EditForm id={props.id} title={props.title} desc={props.desc} />
       </div>
-      <Button variant="ghost" className="rounded-full">
+      <Button variant="ghost" onClick={onDelete} className="rounded-full">
         <Trash2 />
       </Button>
     </div>
@@ -99,6 +115,8 @@ const actionFormSchema = z.object({
 })
 
 function ActionBar() {
+  const dispatch = useAppDispatch();
+
   const form = useForm({
     resolver: zodResolver(actionFormSchema),
     defaultValues: {
@@ -107,7 +125,7 @@ function ActionBar() {
   });
 
   const onSubmit = (data: z.infer<typeof actionFormSchema>) => {
-    console.log(data);
+    dispatch(api.createTodo(data.title, ''));
     form.reset()
   }
 
@@ -164,6 +182,7 @@ export default function App() {
                 {todos.filter(tab[1] as () => boolean).map((todo: TodoType) => (
                   <Todo
                     key={todo._id}
+                    id={todo._id}
                     title={todo.title}
                     desc={todo.desc}
                     completed={todo.completed}
