@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import  type { RootState } from "./lib/store";
+import { useAppDispatch, useAppSelector, type RootState } from "./lib/store";
 import type { Todo as TodoType } from "./features/todoSlice";
 import Header from "./sections/Header";
 import Options from "./sections/Options";
@@ -142,11 +141,11 @@ function ActionBar() {
 }
 
 export default function App() {
-  const todos = useSelector((state: RootState) => state.todos.todos);
-  const dispatch = useDispatch();
+  const todos = useAppSelector((state: RootState) => state.todos.todos);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch<any>(api.getTodos());
+    dispatch(api.getTodos());
   }, [])
 
   return <>
