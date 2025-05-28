@@ -1,4 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import  type { RootState } from "./lib/store";
+import type { Todo as TodoType } from "./features/todoSlice";
 import Header from "./sections/Header";
 import Options from "./sections/Options";
 import { Tabs, TabsContent } from "./components/ui/tabs";
@@ -18,6 +21,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Textarea } from "./components/ui/textarea";
+import api from "./lib/api";
 
 const editFormSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -25,14 +29,7 @@ const editFormSchema = z.object({
 });
 
 function EditForm(props: {title: string, desc: string}) {
-  // const form = useForm({
-  //   resolver: zodResolver(editFormSchema),
-  //   defaultValue: {
-  //     title: props.title ||'',
-  //     desc: props.desc || ''
-  //   }
-  // })
-
+  // TODO: validation
   const [titleProp, setTitleProp] = useState(props.title);
   const [descProp, setDescProp] = useState(props.desc);
 
@@ -47,10 +44,10 @@ function EditForm(props: {title: string, desc: string}) {
 
   return (
     <Dialog onOpenChange={onOpenChange}>
-      <DialogTrigger className="flex-1 text-left">
+      <DialogTrigger className="flex-1 text-left max-w-[30vw]">
         <div>
-          <h3 className="text-lg font-semibold">{props.title}</h3>
-          <p className="text-gray-600">{props.desc}</p>
+          <h3 className="text-lg font-semibold truncate">{props.title}</h3>
+          <p className="text-gray-600 truncate">{props.desc}</p>
         </div>
       </DialogTrigger>
       <DialogContent>
@@ -82,10 +79,10 @@ function Todo(props: { title: string; desc: string, completed: boolean }) {
     <div className="m-2 my-1 p-4 flex justify-between items-center rounded-lg border-1 border-gray-200">
       <div className="flex items-center flex-1">
         <Button variant="ghost" className="rounded-full">
-          {props.completed &&
+          {!props.completed &&
             <Circle />
           }
-          {!props.completed &&
+          {props.completed &&
             <CircleCheckBig />
           }
         </Button>
@@ -145,24 +142,29 @@ function ActionBar() {
 }
 
 export default function App() {
+  const todos = useSelector((state: RootState) => state.todos.todos);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch<any>(api.getTodos());
+  }, [])
+
   return <>
     <Header />
-    <section className="w-full flex justify-center">
+    <section className="w-full flex justify-center overflow-hidden">
       <div className="w-[40vw] min-h-screen h-full pb-26 shadow-lg">
         <Tabs defaultValue="all">
           <Options />
           <TabsContent value="all">
             <div className="flex flex-col gap-1">
-              {
-                Array.from({ length: 10 }).map((_, index) => (
-                  <Todo
-                    key={index}
-                    title={`Task ${index + 1}`}
-                    desc={`Description for task ${index + 1}`}
-                    completed={index % 2 === 0}
-                  />
-                ))
-              }
+              {todos.map((todo: TodoType) => (
+                <Todo
+                  key={todo._id}
+                  title={todo.title}
+                  desc={todo.desc}
+                  completed={todo.completed}
+                />
+              ))}
             </div>
           </TabsContent>
           <TabsContent value="done">Change your password here.</TabsContent>
