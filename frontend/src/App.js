@@ -50,10 +50,8 @@ function App() {
           </div>
         </div>
 
-        
-        
         <div className="container">
-          <div className="row row-cols-auto">
+          <div className="row row-cols-auto d-flex justify-content-between align-items-center">
 
             <div className="col">
               <ul id="menu" className="nav nav-tabs">
@@ -75,8 +73,8 @@ function App() {
               </ul>
             </div>
 
-            <div className="col container">
-              <div className="row row-cols-auto">
+            <div className="col">
+              <div className="row row-cols-auto d-flex align-items-center">
                 <span className='col'>
                   <ChartColumnIncreasing />
                 </span>
