@@ -3,7 +3,8 @@ import { ChevronLeft, CircleCheckBig, Clock, Gauge, RotateCcw } from "lucide-rea
 import { Button } from "./components/ui/button";
 import React from 'react';
 import { ToggleGroup, ToggleGroupItem } from "./components/ui/toggle-group";
-import { Bold, Italic, Underline } from "lucide-react"
+import { ChartContainer, ChartTooltip, type ChartConfig } from "./components/ui/chart";
+import { AreaChart, CartesianGrid, XAxis, Area, YAxis} from "recharts";
 
 function StatCard(props: {count: string, name: string, icon: React.ReactNode}) {
     return (
@@ -21,7 +22,32 @@ function StatCard(props: {count: string, name: string, icon: React.ReactNode}) {
     )
 }
 
+// TODO: fix type
+const CustomTooltip: React.FC<any> = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      const data = payload[0].payload;
+      return (
+        <div className="rounded-md border bg-white p-3 shadow-sm">
+          <p className="font-semibold text-gray-800">{label}</p>
+          <p className="text-sm text-gray-600">Rate: {data.rate}%</p>
+          <p className="text-sm text-gray-600">
+            Completed: {data.completed} / {data.total}
+          </p>
+        </div>
+      );
+    }
+  
+    return null;
+  };
+
 export default function Analytics() {
+    const completionRateData = [
+        { week: 'Week 1', completed: 85, total: 100, rate: 85 },
+        { week: 'Week 2', completed: 92, total: 105, rate: 87.6 },
+        { week: 'Week 3', completed: 88, total: 95, rate: 92.6 },
+        { week: 'Week 4', completed: 96, total: 110, rate: 87.3 },
+    ];
+    
     return (<>
         <Header />
 
@@ -49,6 +75,36 @@ export default function Analytics() {
                     <StatCard count="19" name="Velocity" icon={<Gauge size={16} />} />
                     <StatCard count="5" name="Re-opened" icon={<RotateCcw size={16} />} />
                 </div>
+
+                <ChartContainer config={{} as ChartConfig} className="h-80 w-full my-8">
+                    <AreaChart
+                        accessibilityLayer
+                        data={completionRateData}
+                        margin={{
+                            left: 12,
+                            right: 36,
+                        }}
+                    >
+                        <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                        <XAxis
+                            dataKey="week"
+                            tick={{ fill: '#9CA3AF', fontSize: 12 }}
+                        />
+                        <YAxis tick={{ fill: '#9CA3AF', fontSize: 12 }} />
+                        <ChartTooltip
+                            cursor={false}
+                            content={<CustomTooltip />}
+                        />
+                        <Area
+                            dataKey="rate"
+                            type="monotone"
+                            fill="#2563eb"
+                            fillOpacity={0.4}
+                            stroke="#2563eb"
+                        />
+                    </AreaChart>
+                </ChartContainer>
+
             </div>
         </section>
     </>);
