@@ -21,6 +21,8 @@ import {
 } from "@/components/ui/dialog"
 import { Textarea } from "./components/ui/textarea";
 import api from "./lib/api";
+import { auth } from "./lib/firebase";
+import { useAuth } from "./components/auth-provider";
 
 const editFormSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -159,6 +161,7 @@ function ActionBar() {
 }
 
 export default function App() {
+  const { user } = useAuth();
   const todos = useAppSelector((state: RootState) => state.todos.todos);
   const dispatch = useAppDispatch();
 
@@ -166,10 +169,26 @@ export default function App() {
     dispatch(api.getTodos());
   }, [])
 
+  const userLogOut = async () => {
+    await auth.signOut();
+  }
+
   return <>
     <Header />
     <section className="w-full flex justify-center overflow-hidden">
       <div className="w-[40vw] min-h-screen h-full pb-26 shadow-lg">
+        {/* TEMP */}
+        {
+          user && 
+            (<>
+              <p className='text-2xl'>{user.displayName}</p>
+              <Button onClick={userLogOut}>
+                Log out
+              </Button>
+            </>)
+        }
+        {/* TEMP END */}
+
         <Tabs defaultValue="all">
           <Options />
           {[

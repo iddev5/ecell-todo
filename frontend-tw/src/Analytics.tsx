@@ -56,7 +56,7 @@ export default function Analytics() {
             <div className="sm:w-[40vw] w-screen min-h-screen h-full pb-26 shadow-lg">
                 <div className="flex justify-between items-center m-4 mt-5">
                     <div className="flex items-center gap-5">
-                        <Link to={'/'}>
+                        <Link to={'/app'}>
                             <Button variant='ghost'>
                                 {/* NOTE: size is not supported for icons inside <Button> */}
                                 <ChevronLeft style={{ scale: 2 }} />

@@ -7,6 +7,7 @@ import {
   toggleComplete,
 } from "../features/todoSlice";
 import type { Dispatch } from "@reduxjs/toolkit";
+import { auth } from "./firebase";
 
 const host = import.meta.env.VITE_APP_HOST || "";
 
@@ -55,4 +56,17 @@ const markCompleted = (id: string, completed: boolean) => async (dispatch: Dispa
   dispatch(toggleComplete(id));
 };
 
-export default { getTodos, createTodo, deleteTodo, updateTodo, markCompleted };
+const createUser = () => async (_: Dispatch) => {
+  const user = auth.currentUser;
+  if (user) {
+    const token = user.getIdToken();
+
+    const response = await axios.put(`${host}/api/auth/google`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+  }
+};
+
+export default { getTodos, createTodo, deleteTodo, updateTodo, markCompleted, createUser };
