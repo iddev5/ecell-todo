@@ -10,6 +10,7 @@ import { TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ChartColumnIncreasing, Funnel } from "lucide-react"
 import { useAppDispatch } from "@/lib/store"
 import { changeSortOrder } from "@/features/todoSlice"
+import { Link } from "react-router"
 
 export default function Options() {
     const dispatch = useAppDispatch();
@@ -28,9 +29,11 @@ export default function Options() {
                 </TabsList>
             </div>
             <div className="flex items-center gap-3">
-                <Button variant="secondary">
-                    <ChartColumnIncreasing />
-                </Button>
+                <Link to={'/analytics'}>
+                    <Button variant="secondary">
+                        <ChartColumnIncreasing />
+                    </Button>
+                </Link>
                 <Funnel className="opacity-50" />
                 <Select onValueChange={onSort}>
                     <SelectTrigger className="w-[130px]">

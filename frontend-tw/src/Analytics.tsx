@@ -5,6 +5,7 @@ import React from 'react';
 import { ToggleGroup, ToggleGroupItem } from "./components/ui/toggle-group";
 import { ChartContainer, ChartTooltip, type ChartConfig } from "./components/ui/chart";
 import { AreaChart, CartesianGrid, XAxis, Area, YAxis} from "recharts";
+import { Link } from "react-router";
 
 function StatCard(props: {count: string, name: string, icon: React.ReactNode}) {
     return (
@@ -55,10 +56,12 @@ export default function Analytics() {
             <div className="sm:w-[40vw] w-screen min-h-screen h-full pb-26 shadow-lg">
                 <div className="flex justify-between items-center m-4 mt-5">
                     <div className="flex items-center gap-5">
-                        <Button variant='ghost'>
-                            {/* NOTE: size is not supported for icons inside <Button> */}
-                            <ChevronLeft style={{ scale: 2 }} />
-                        </Button>
+                        <Link to={'/'}>
+                            <Button variant='ghost'>
+                                {/* NOTE: size is not supported for icons inside <Button> */}
+                                <ChevronLeft style={{ scale: 2 }} />
+                            </Button>
+                        </Link>
                         <p className='text-3xl'>Analytics</p>
                     </div>
                     <ToggleGroup type='single' variant='outline' className="mr-4">
