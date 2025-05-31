@@ -54,7 +54,7 @@ export default function Analytics() {
 
         <section className="w-full flex justify-center overflow-hidden">
             <div className="sm:w-[40vw] w-screen min-h-screen h-full pb-26 shadow-lg">
-                <div className="flex justify-between items-center m-4 mt-5">
+                <div className="flex justify-between items-center m-2 md:m-4 mt-5">
                     <div className="flex items-center gap-5">
                         <Link to={'/app'}>
                             <Button variant='ghost'>
@@ -62,9 +62,9 @@ export default function Analytics() {
                                 <ChevronLeft style={{ scale: 2 }} />
                             </Button>
                         </Link>
-                        <p className='text-3xl'>Analytics</p>
+                        <p className='text-2xl md:text-3xl'>Analytics</p>
                     </div>
-                    <ToggleGroup type='single' variant='outline' className="mr-4">
+                    <ToggleGroup type='single' variant='outline' className="mr-2 md:mr-4">
                         <ToggleGroupItem value='1d'>1D</ToggleGroupItem>
                         <ToggleGroupItem value='1w'>1W</ToggleGroupItem>
                         <ToggleGroupItem value='2w'>2W</ToggleGroupItem>
@@ -72,7 +72,7 @@ export default function Analytics() {
                         <ToggleGroupItem value='6m'>6M</ToggleGroupItem>
                     </ToggleGroup>
                 </div>
-                <div className="flex border-y-1 mt-4">
+                <div className="grid grid-cols-2 md:grid-cols-4 border-y-1 mt-4">
                     <StatCard count="92%" name="Compl. Rate" icon={<CircleCheckBig size={16} />} />
                     <StatCard count="4h" name="Avg. Time" icon={<Clock size={16} />} />
                     <StatCard count="19" name="Velocity" icon={<Gauge size={16} />} />

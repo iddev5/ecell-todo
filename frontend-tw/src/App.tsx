@@ -131,9 +131,9 @@ function ActionBar() {
 
   return (
     <div className="w-full flex justify-center relative">
-      <div className="w-[40vw] fixed bottom-0 shadow-lg bg-white border-t-1 border-gray-200">
+      <div className="w-[95vw] md:w-[40vw] fixed bottom-0 shadow-lg bg-white border-t-1 border-gray-200">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="w-full flex items-center gap-1 p-2 px-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="w-full flex items-center gap-1 p-2 px-2 md:px-4">
             <FormField
               control={form.control}
               name="title"
@@ -169,7 +169,7 @@ export default function App() {
   return <>
     <Header />
     <section className="w-full flex justify-center overflow-hidden">
-      <div className="w-[40vw] min-h-screen h-full pb-26 shadow-lg">
+      <div className="w-[95vw] md:w-[40vw] min-h-screen h-full pb-26 shadow-lg">
         <Tabs defaultValue="all">
           <Options />
           {[

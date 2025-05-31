@@ -20,7 +20,7 @@ export default function Options() {
     }
 
     return (
-        <div className="w-full p-4 border-b-1 border-grey-200 flex justify-between items-center">
+        <div className="w-full p-2 md:p-4 border-b-1 border-grey-200 flex gap-2 justify-between items-center">
             <div>
                 <TabsList>
                     <TabsTrigger value="all">All</TabsTrigger>
@@ -28,7 +28,7 @@ export default function Options() {
                     <TabsTrigger value="inprog">In-progress</TabsTrigger>
                 </TabsList>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1 md:gap-3">
                 <Link to={'/analytics'}>
                     <Button variant="secondary">
                         <ChartColumnIncreasing />
@@ -36,7 +36,7 @@ export default function Options() {
                 </Link>
                 <Funnel className="opacity-50" />
                 <Select onValueChange={onSort}>
-                    <SelectTrigger className="w-[130px]">
+                    <SelectTrigger className="w-[90px] md:w-[130px]">
                         <SelectValue placeholder="Sort by" />
                     </SelectTrigger>
                     <SelectContent>
