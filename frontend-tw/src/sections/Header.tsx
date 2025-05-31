@@ -57,7 +57,7 @@ function SideBar() {
                 <div className="flex gap-2 items-center">
                     {theme === 'light' && <Sun />}
                     {theme === 'dark' && <Moon />}
-                    <Switch onCheckedChange={changeTheme} />
+                    <Switch checked={theme === 'dark'} onCheckedChange={changeTheme} />
                 </div>
             </SheetFooter>
         </SheetHeader>
