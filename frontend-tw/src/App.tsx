@@ -183,16 +183,17 @@ export default function App() {
     dispatch(api.getTodos());
   }, [])
 
+  const isClosed = (el: string) => ["closed", "not an issue"].some(status => el === status);
+
   return <>
     <Header />
     <section className="w-full flex justify-center overflow-hidden">
       <div className="w-[95vw] md:w-[40vw] min-h-screen h-full pb-26 shadow-lg">
-        <Tabs defaultValue="all">
+        <Tabs defaultValue="open">
           <Options />
           {[
-            ["all", (todo: TodoType) => true],
-            ["done", (todo: TodoType) => todo.completed === true],
-            ["inprog", (todo: TodoType) => todo.completed === false],
+            ["open", (todo: TodoType) => !isClosed(todo.status)],
+            ["closed", (todo: TodoType) => isClosed(todo.status)],
           ].map((tab) => (
             <TabsContent value={tab[0] as string}>
               <div className="flex flex-col gap-1">

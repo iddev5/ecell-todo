@@ -14,7 +14,7 @@ import { Link } from "react-router"
 
 export default function Options() {
     const dispatch = useAppDispatch();
-    
+
     const onSort = (e: string) => {
         dispatch(changeSortOrder(e));
     }
@@ -23,9 +23,8 @@ export default function Options() {
         <div className="w-full p-2 md:p-4 border-b-1 border-grey-200 flex gap-2 justify-between items-center">
             <div>
                 <TabsList>
-                    <TabsTrigger value="all">All</TabsTrigger>
-                    <TabsTrigger value="done">Done</TabsTrigger>
-                    <TabsTrigger value="inprog">In-progress</TabsTrigger>
+                    <TabsTrigger value="open">Open</TabsTrigger>
+                    <TabsTrigger value="closed">Closed</TabsTrigger>
                 </TabsList>
             </div>
             <div className="flex items-center gap-1 md:gap-3">
