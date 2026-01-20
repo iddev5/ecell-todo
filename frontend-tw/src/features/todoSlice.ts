@@ -21,11 +21,11 @@ const sortTodos = (todos: Array<Todo>, sortOrder: string): Array<Todo> => {
   const incompletes = todos.filter((todo) => todo.status !== "resolved");
 
   completes.sort((a, b) => {
-    const x = new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+    const x = new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
     return sortOrder === "new" ? x : -x;
   });
   incompletes.sort((a, b) => {
-    const x = new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+    const x = new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
     return sortOrder === "new" ? x : -x;
   });
 
