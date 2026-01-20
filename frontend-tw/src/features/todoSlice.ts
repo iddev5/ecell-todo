@@ -70,6 +70,16 @@ export const todoSlice = createSlice({
         state.todos = sortTodos(state.todos, state.sortOrder);
       }
     },
+    setStatus: (state, action: PayloadAction<string>) => {
+      const index = state.todos.findIndex(
+        (todo) => todo._id === action.payload
+      );
+      if (index !== -1) {
+        state.todos[index].status = action.payload.status;
+
+        state.todos = sortTodos(state.todos, state.sortOrder);
+      }
+    },
     changeSortOrder: (state, action: PayloadAction<string>) => {
       state.sortOrder = action.payload;
       state.todos = sortTodos(state.todos, state.sortOrder);

@@ -15,7 +15,7 @@ const todoSchema = Schema(
     },
     status: {
       type: String,
-      default: "issue",
+      default: "open",
     },
   },
   { timestamps: true }

@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/dialog"
 import { Textarea } from "./components/ui/textarea";
 import api from "./lib/api";
+import StatusDropdown from "./components/StatusDropdown"
 
 const editFormSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -86,6 +87,10 @@ function Todo(props: { hash: number, id: string, title: string; desc: string, st
     dispatch(api.markCompleted(props.id, !props.completed));
   };
 
+  const onSetStatus = (value: string) => {
+    dispatch(api.setStatus(props.id, value));
+  }
+
   const onDelete = () => {
     dispatch(api.deleteTodo(props.id));
   }
@@ -103,7 +108,8 @@ function Todo(props: { hash: number, id: string, title: string; desc: string, st
         </Button> */}
         <p className="font-bold text-gray-500">#{props.hash}</p>
         <EditForm id={props.id} title={props.title} desc={props.desc} />
-        <Button variant="secondary">{props.status}</Button>
+        {/* <Button variant="secondary">{props.status}</Button> */}
+        <StatusDropdown status={props.status} onChange={onSetStatus} />
         <p className="font-bold text-gray-500">
           {
             new Date(props.updatedAt).toLocaleDateString("en-US", {

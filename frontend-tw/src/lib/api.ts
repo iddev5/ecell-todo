@@ -56,6 +56,14 @@ const markCompleted = (id: string, completed: boolean) => async (dispatch: Dispa
   dispatch(toggleComplete(id));
 };
 
+const setStatus = (id: string, status: string) => async (dispatch: Dispatch) => {
+  const response = await axios.put(`${host}/api/${id}/`, {
+    status: status,
+  });
+
+  dispatch(setStatus(id, status));
+};
+
 const createUser = () => async (_: Dispatch) => {
   const user = auth.currentUser;
   if (user) {
@@ -69,4 +77,4 @@ const createUser = () => async (_: Dispatch) => {
   }
 };
 
-export default { getTodos, createTodo, deleteTodo, updateTodo, markCompleted, createUser };
+export default { getTodos, createTodo, deleteTodo, updateTodo, markCompleted, setStatus, createUser };
