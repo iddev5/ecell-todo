@@ -3,9 +3,10 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 export interface Todo {
   _id: string;
+  hash: number,
   title: string;
   desc: string;
-  completed: boolean;
+  status: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -16,8 +17,8 @@ interface TodoState {
 }
 
 const sortTodos = (todos: Array<Todo>, sortOrder: string): Array<Todo> => {
-  const completes = todos.filter((todo) => todo.completed === true);
-  const incompletes = todos.filter((todo) => todo.completed === false);
+  const completes = todos.filter((todo) => todo.status === "resolved");
+  const incompletes = todos.filter((todo) => todo.status !== "resolved");
 
   completes.sort((a, b) => {
     const x = new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();

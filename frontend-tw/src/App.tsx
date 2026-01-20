@@ -79,7 +79,7 @@ function EditForm(props: {id: string, title: string, desc: string}) {
   )
 }
 
-function Todo(props: { id: string, title: string; desc: string, completed: boolean }) {
+function Todo(props: { hash: number, id: string, title: string; desc: string, status: string, updatedAt: string }) {
   const dispatch = useAppDispatch();
 
   const onComplete = () => {
@@ -92,16 +92,27 @@ function Todo(props: { id: string, title: string; desc: string, completed: boole
 
   return (
     <div className="m-2 my-1 p-4 flex justify-between items-center rounded-lg border-1 border-gray-200">
-      <div className="flex items-center flex-1">
-        <Button variant="ghost" onClick={onComplete} className="rounded-full">
+      <div className="flex items-center flex-1 gap-2">
+        {/* <Button variant="ghost" onClick={onComplete} className="rounded-full">
           {!props.completed &&
             <Circle />
           }
           {props.completed &&
             <CircleCheckBig />
           }
-        </Button>
+        </Button> */}
+        <p className="font-bold text-gray-500">#{props.hash}</p>
         <EditForm id={props.id} title={props.title} desc={props.desc} />
+        <Button variant="secondary">{props.status}</Button>
+        <p className="font-bold text-gray-500">
+          {
+            new Date(props.updatedAt).toLocaleDateString("en-US", {
+              month: "short",
+              day: "2-digit",
+              year: "numeric",
+            })
+          }
+      </p>
       </div>
       <Button variant="ghost" onClick={onDelete} className="rounded-full">
         <Trash2 />
@@ -183,13 +194,15 @@ export default function App() {
                   <Todo
                     key={todo._id}
                     id={todo._id}
+                    hash={todo.hash}
                     title={todo.title}
                     desc={todo.desc}
-                    completed={todo.completed}
+                    status={todo.status}
+                    updatedAt={todo.updatedAt}
                   />
                 ))}
               </div>
-            </TabsContent>                
+            </TabsContent>
           ))}
         </Tabs>
       </div>

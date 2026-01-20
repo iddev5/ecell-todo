@@ -13,7 +13,7 @@ function ProfileTrigger() {
 
     return (
         <Avatar>
-            {user && 
+            {user &&
                 <>
                     <AvatarImage src={`https://api.dicebear.com/9.x/shapes/svg?seed=${encodeURI(user?.displayName)}`} />
                     <AvatarFallback>
@@ -21,9 +21,9 @@ function ProfileTrigger() {
                         user?.displayName[0]
                     }
                     </AvatarFallback>
-                </> 
+                </>
             }
-            {!user && 
+            {!user &&
                 <AvatarFallback>
                     ?
                 </AvatarFallback>
@@ -75,10 +75,10 @@ export default function Header() {
                         <SideBar />
                     </SheetContent>
                 </Sheet>
-                
+
                 <div className="flex items-center gap-2">
                     <div className="relative">
-                        <Input className="w-[70vw] md:w-[20vw]" placeholder="Search tasks..." />
+                        <Input className="w-[70vw] md:w-[20vw]" placeholder="Search issues..." />
                         <Search className="absolute top-1/2 -translate-y-1/2 right-2 border-1 rounded-md p-1 opacity-80" />
                     </div>
                 </div>
