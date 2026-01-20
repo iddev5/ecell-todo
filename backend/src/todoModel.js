@@ -2,6 +2,10 @@ import { Schema, model } from "mongoose";
 
 const todoSchema = Schema(
   {
+    hash: {
+      type: Number,
+      required: true,
+    },
     title: {
       type: String,
       required: true,
@@ -9,9 +13,9 @@ const todoSchema = Schema(
     desc: {
       type: String,
     },
-    completed: {
-      type: Boolean,
-      default: false,
+    status: {
+      type: String,
+      default: "issue",
     },
   },
   { timestamps: true }

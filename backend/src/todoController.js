@@ -3,7 +3,15 @@ import asyncHandler from "express-async-handler";
 
 // CREATE
 export const createTodo = asyncHandler(async (req, res) => {
-  let todo = new Todo(req.body);
+  const count = await Todo.countDocuments();
+
+  const todoData = {
+    hash: count + 1,
+    title: req.body.title,
+    desc: req.body.desc,
+  };
+
+  let todo = new Todo(todoData);
   await todo.save();
   res.json(todo);
 });
