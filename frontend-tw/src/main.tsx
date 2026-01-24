@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import Index from './Index.tsx'
 import App from './App.tsx'
+import Home from './Home.tsx'
 import Analytics from './Analytics.tsx'
 import NewProject from './NewProject.tsx'
 import { BrowserRouter, Routes, Route } from 'react-router';
@@ -19,7 +20,8 @@ createRoot(document.getElementById('root')!).render(
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />
-              <Route path="/app" element={<App  />} />
+              <Route path="/home" element={<Home />} />
+              <Route path="/app" element={<App />} />
               <Route path="/analytics" element={<Analytics />} />
               <Route path="/project/new" element={<NewProject />} />
             </Routes>

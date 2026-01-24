@@ -100,6 +100,7 @@ const createProject =
 
 const getProjects = (uid: string) => async (dispatch: Dispatch) => {
   const response = await axios.get(`${host}/api/project/${uid}`);
+  console.log(response.data);
   dispatch(setProjects(response.data));
 };
 

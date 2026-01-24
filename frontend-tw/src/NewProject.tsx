@@ -55,10 +55,10 @@ export default function NewProject() {
   });
 
   const onSubmit = async (values: FormValues) => {
-    const uid = await user.getIdToken();
+    const uid = user.uid;
     dispatch(api.createProject(uid, values.name, values.description));
 
-    navigate('/app');
+    navigate('/home');
   };
 
   return (

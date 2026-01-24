@@ -15,7 +15,7 @@ export default function Index() {
         const additionalInfo = getAdditionalUserInfo(res);
 
         dispatch(api.createUser());
-        navigate('/app');
+        navigate('/home');
     }
 
     return (

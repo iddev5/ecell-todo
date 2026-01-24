@@ -130,19 +130,8 @@ function Todo(props: { hash: number, id: string, title: string; desc: string, st
 }
 
 export default function App() {
-  const { user, loading } = useAuth();
   const todos = useAppSelector((state: RootState) => state.todos.todos);
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    const T = async () => {
-      if (!loading) {
-        const uid = await user.getIdToken();
-        dispatch(api.getProjects(uid));
-      }
-    };
-    T();
-  }, [loading])
 
   useEffect(() => {
     dispatch(api.getTodos());
