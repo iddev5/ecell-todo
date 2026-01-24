@@ -8,6 +8,13 @@ import {
   updateTodo,
   deleteTodo,
 } from "./todoController.js";
+
+import {
+  createProject,
+  getProjects,
+  deleteProject,
+} from "./projectController.js";
+
 import admin from "./firebase.js";
 import User from "./userModel.js";
 import asyncHandler from "express-async-handler";
@@ -24,6 +31,10 @@ app.post("/api", createTodo);
 app.get("/api", getTodos);
 app.put("/api/:id", updateTodo);
 app.delete("/api/:id", deleteTodo);
+
+app.post("/api/project", createProject);
+app.get("/api/project/:uid", getProjects);
+app.delete("/api/project/:id", deleteProject);
 
 app.post("/api/auth/google", asyncHandler(async (req, res) => {
   const token = req.headers.authorization.split("Bearer ")[1];

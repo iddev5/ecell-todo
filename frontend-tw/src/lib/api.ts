@@ -6,6 +6,11 @@ import {
   updateTodo as updateTodoState,
   toggleComplete,
 } from "../features/todoSlice";
+import {
+  setProjects,
+  addProject,
+  deleteProject as deleteProjectState,
+} from "../features/projectSlice";
 import type { Dispatch } from "@reduxjs/toolkit";
 import { auth } from "./firebase";
 
@@ -77,4 +82,33 @@ const createUser = () => async (_: Dispatch) => {
   }
 };
 
-export default { getTodos, createTodo, deleteTodo, updateTodo, markCompleted, setStatus, createUser };
+const createProject =
+  (uid: string, name: string, desc: string = "") =>
+  async (dispatch: Dispatch) => {
+    if (name === undefined || name === "") return;
+
+    const new_proj = {
+      uid: uid,
+      name: name,
+      desc: desc,
+    };
+
+    const response = await axios.post(`${host}/api/project`, new_proj);
+    dispatch(addProject(response.data));
+  };
+
+const getProjects = (uid: string) => async (dispatch: Dispatch) => {
+  const response = await axios.get(`${host}/api/project/${uid}`);
+  dispatch(setProjects(response.data));
+};
+
+const deleteProject = (id: string) => async (dispatch: Dispatch) => {
+  await axios.delete(`${host}/api/project/${id}/`);
+  dispatch(deleteProjectState(id));
+};
+
+export default {
+  getTodos, createTodo, deleteTodo, updateTodo, markCompleted, setStatus,
+  createUser,
+  createProject, getProjects, deleteProject,
+};

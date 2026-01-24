@@ -3,6 +3,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 export interface Project {
   _id: string;
+  uid: string,
   name: string;
   desc: string;
   createdAt: string;

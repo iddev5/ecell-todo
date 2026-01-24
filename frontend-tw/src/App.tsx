@@ -23,6 +23,7 @@ import { Textarea } from "./components/ui/textarea";
 import api from "./lib/api";
 import StatusDropdown from "./components/StatusDropdown"
 import ActionBar from "./components/ActionBar"
+import { useAuth } from "@/components/auth-provider";
 
 const editFormSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -129,12 +130,20 @@ function Todo(props: { hash: number, id: string, title: string; desc: string, st
 }
 
 export default function App() {
+  const { user, loading } = useAuth();
   const todos = useAppSelector((state: RootState) => state.todos.todos);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(api.getTodos());
-  }, [])
+    const T = async () => {
+      if (!loading) {
+        const uid = await user.getIdToken();
+        dispatch(api.getProjects(uid));
+        dispatch(api.getTodos());
+      }
+    };
+    T();
+  }, [loading])
 
   const isClosed = (el: string) => ["closed", "not an issue"].some(status => el === status);
 

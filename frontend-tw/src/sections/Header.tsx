@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from "../lib/store";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetFooter } from "@/components/ui/sheet";
 
-import { addProject } from "../features/projectSlice";
+import api from "@/lib/api";
 
 function ProfileTrigger() {
     const { user } = useAuth();
@@ -49,8 +49,9 @@ function SideBar() {
         setTheme(b ? 'dark' : 'light');
     }
 
-    const newProject = () => {
-      dispatch(addProject({ name: 'Test' }))
+    const newProject = async () => {
+      const uid = await user.getIdToken();
+      dispatch(api.createProject(uid, 'Test', 'Hello'));
     }
 
     return (
