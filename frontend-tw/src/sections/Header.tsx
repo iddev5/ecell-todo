@@ -2,6 +2,7 @@ import { Switch } from "@/components/ui/switch";
 import { Input } from "../components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useTheme } from '@/components/theme-provider';
+import { useNavigate } from 'react-router';
 import { Moon, Search, Sun } from 'lucide-react';
 import { auth } from '../lib/firebase';
 import { useAuth } from "@/components/auth-provider";
@@ -38,6 +39,7 @@ function ProfileTrigger() {
 function SideBar() {
     const { user } = useAuth();
     const { theme, setTheme } = useTheme();
+    const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const projects = useAppSelector((state: RootState) => state.projects.projects);
 
@@ -50,8 +52,7 @@ function SideBar() {
     }
 
     const newProject = async () => {
-      const uid = await user.getIdToken();
-      dispatch(api.createProject(uid, 'Test', 'Hello'));
+      navigate('/project/new');
     }
 
     return (

@@ -4,6 +4,7 @@ import './index.css'
 import Index from './Index.tsx'
 import App from './App.tsx'
 import Analytics from './Analytics.tsx'
+import NewProject from './NewProject.tsx'
 import { BrowserRouter, Routes, Route } from 'react-router';
 import { Provider } from 'react-redux'
 import store from './lib/store.ts'
@@ -20,6 +21,7 @@ createRoot(document.getElementById('root')!).render(
               <Route path="/" element={<Index />} />
               <Route path="/app" element={<App  />} />
               <Route path="/analytics" element={<Analytics />} />
+              <Route path="/project/new" element={<NewProject />} />
             </Routes>
           </BrowserRouter>
         </Provider>
