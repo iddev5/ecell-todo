@@ -131,11 +131,12 @@ function Todo(props: { hash: number, id: string, title: string; desc: string, st
 
 export default function App() {
   const todos = useAppSelector((state: RootState) => state.todos.todos);
+  const currentProject = useAppSelector((state: RootState) => state.projects.currentProject);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(api.getTodos());
-  });
+    dispatch(api.getTodos(currentProject._id));
+  }, []);
 
   const isClosed = (el: string) => ["closed", "not an issue"].some(status => el === status);
 

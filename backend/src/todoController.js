@@ -19,7 +19,7 @@ export const createTodo = asyncHandler(async (req, res) => {
 
 // READ
 export const getTodos = asyncHandler(async (req, res) => {
-  const todos = await Todo.find({ pid: req.pid });
+  const todos = await Todo.find({ pid: req.params.pid });
   res.json(todos);
 });
 
