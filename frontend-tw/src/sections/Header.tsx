@@ -3,7 +3,7 @@ import { Input } from "../components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useTheme } from '@/components/theme-provider';
 import { useNavigate } from 'react-router';
-import { Moon, Search, Sun } from 'lucide-react';
+import { Moon, Search, Sun, Plus } from 'lucide-react';
 import { auth } from '../lib/firebase';
 import { useAuth } from "@/components/auth-provider";
 import { useAppDispatch, useAppSelector } from "../lib/store";
@@ -61,10 +61,11 @@ function SideBar() {
             <SheetDescription>
               <Button onClick={newProject}>
                 New Project
+                <Plus />
               </Button>
-              <div>{
+              <div className="mt-4 flex flex-col gap-2 items-start">{
                   projects.map(proj =>
-                    <Button variant="light">{proj.name}</Button>
+                    <Button className="w-full justify-start" variant="secondary"><p className="truncate">{proj.name}</p></Button>
                   )
               }</div>
             </SheetDescription>
