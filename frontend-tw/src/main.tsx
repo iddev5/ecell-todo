@@ -21,8 +21,8 @@ createRoot(document.getElementById('root')!).render(
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/home" element={<Home />} />
-              <Route path="/app" element={<App />} />
               <Route path="/analytics" element={<Analytics />} />
+              <Route path="/project/:pid" element={<App />} />
               <Route path="/project/new" element={<NewProject />} />
             </Routes>
           </BrowserRouter>

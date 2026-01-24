@@ -29,8 +29,7 @@ export default function Home() {
   }
 
   const setProject = (proj) => {
-    dispatch(setCurrentProject(proj));
-    navigate('/app');
+    navigate(`/project/${proj._id}`);
   }
 
   return (

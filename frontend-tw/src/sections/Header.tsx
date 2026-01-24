@@ -57,7 +57,7 @@ function SideBar() {
     }
 
     const setProject = (proj) => {
-      dispatch(setCurrentProject(proj));
+      navigate(`/project/${proj._id}`);
     }
 
     return (

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useParams } from 'react-router';
 import { useAppDispatch, useAppSelector, type RootState } from "./lib/store";
 import type { Todo as TodoType } from "./features/todoSlice";
 import Header from "./sections/Header";
@@ -130,12 +131,13 @@ function Todo(props: { hash: number, id: string, title: string; desc: string, st
 }
 
 export default function App() {
+  const params = useParams();
   const todos = useAppSelector((state: RootState) => state.todos.todos);
   const currentProject = useAppSelector((state: RootState) => state.projects.currentProject);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(api.getTodos(currentProject._id));
+    dispatch(api.getTodos(params.pid));
   }, []);
 
   const isClosed = (el: string) => ["closed", "not an issue"].some(status => el === status);
