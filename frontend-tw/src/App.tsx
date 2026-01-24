@@ -22,6 +22,7 @@ import {
 import { Textarea } from "./components/ui/textarea";
 import api from "./lib/api";
 import StatusDropdown from "./components/StatusDropdown"
+import ActionBar from "./components/ActionBar"
 
 const editFormSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -123,54 +124,6 @@ function Todo(props: { hash: number, id: string, title: string; desc: string, st
       <Button variant="ghost" onClick={onDelete} className="rounded-full">
         <Trash2 />
       </Button>
-    </div>
-  );
-}
-
-const actionFormSchema = z.object({
-  title: z.string().min(1, "Title is required")
-})
-
-function ActionBar() {
-  const dispatch = useAppDispatch();
-
-  const form = useForm({
-    resolver: zodResolver(actionFormSchema),
-    defaultValues: {
-      title: ''
-    }
-  });
-
-  const onSubmit = (data: z.infer<typeof actionFormSchema>) => {
-    dispatch(api.createTodo(data.title, ''));
-    form.reset()
-  }
-
-  return (
-    <div className="w-full flex justify-center relative">
-      <div className="w-[95vw] md:w-[40vw] fixed bottom-0 shadow-lg bg-white border-t-1 border-gray-200">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="w-full flex items-center gap-1 p-2 px-2 md:px-4">
-            <FormField
-              control={form.control}
-              name="title"
-              render={({field}) => (
-                <FormItem className="flex-1">
-                  <FormControl>
-                    <Input placeholder="Add title..." {...field} />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <Button type="submit">
-              <ArrowRight />
-            </Button>
-            <Button variant="secondary">
-              <Mic />
-            </Button>
-          </form>
-        </Form>
-      </div>
     </div>
   );
 }
