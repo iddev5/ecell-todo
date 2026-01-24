@@ -5,8 +5,11 @@ import { useTheme } from '@/components/theme-provider';
 import { Moon, Search, Sun } from 'lucide-react';
 import { auth } from '../lib/firebase';
 import { useAuth } from "@/components/auth-provider";
+import { useAppDispatch, useAppSelector } from "../lib/store";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetFooter } from "@/components/ui/sheet";
+import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetFooter } from "@/components/ui/sheet";
+
+import { addProject } from "../features/projectSlice";
 
 function ProfileTrigger() {
     const { user } = useAuth();
@@ -35,6 +38,8 @@ function ProfileTrigger() {
 function SideBar() {
     const { user } = useAuth();
     const { theme, setTheme } = useTheme();
+    const dispatch = useAppDispatch();
+    const projects = useAppSelector((state: RootState) => state.projects.projects);
 
     const userLogOut = async () => {
         await auth.signOut();
@@ -44,16 +49,29 @@ function SideBar() {
         setTheme(b ? 'dark' : 'light');
     }
 
+    const newProject = () => {
+      dispatch(addProject({ name: 'Test' }))
+    }
+
     return (
         <SheetHeader>
             <SheetTitle>{user?.displayName}</SheetTitle>
-            {/* <SheetDescription>
-                TODO: Mention account type probably
-            </SheetDescription> */}
-            <Button onClick={userLogOut}>
-                Log out
-            </Button>
+            <SheetDescription>
+              <Button onClick={newProject}>
+                New Project
+              </Button>
+              <div>{
+                  projects.map(proj =>
+                    <Button variant="light">{proj.name}</Button>
+                  )
+              }</div>
+            </SheetDescription>
+
             <SheetFooter>
+
+              <Button onClick={userLogOut}>
+                  Log out
+              </Button>
                 <div className="flex gap-2 items-center">
                     {theme === 'light' && <Sun />}
                     {theme === 'dark' && <Moon />}
