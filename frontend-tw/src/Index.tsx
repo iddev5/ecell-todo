@@ -14,16 +14,16 @@ export default function Index() {
         const res = await signInWithPopup(auth, googleProvider);
         const additionalInfo = getAdditionalUserInfo(res);
 
-        if (additionalInfo?.isNewUser) {
-            dispatch(api.createUser());
-        }
-
+        dispatch(api.createUser());
         navigate('/app');
     }
-    
+
     return (
+      <div className="w-screen h-screen flex flex-col gap-10 items-center justify-center">
+        <h1 className="font-bold text-9xl">Flowcode</h1>
         <Button onClick={signIn}>
             <Mail /> Sign in with Google
         </Button>
+      </div>
     );
 }
