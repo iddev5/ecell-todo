@@ -10,6 +10,7 @@ import {
 } from "./todoController.js";
 import admin from "./firebase.js";
 import User from "./userModel.js";
+import asyncHandler from "express-async-handler";
 
 dotenv.config();
 connectDB();
@@ -24,21 +25,18 @@ app.get("/api", getTodos);
 app.put("/api/:id", updateTodo);
 app.delete("/api/:id", deleteTodo);
 
-app.post("/api/auth/google", async (req, res) => {
+app.post("/api/auth/google", asyncHandler(async (req, res) => {
   const token = req.headers.authorization.split("Bearer ")[1];
-  console.log(token);
 
   if (!token) {
     res.sendStatus(401).json({ error: 'No token' });
   }
 
   try {
-    const decoded = admin.auth().verifyIdToken(token);
+    const decoded = await admin.auth().verifyIdToken(token);
     const { uid, name, email } = decoded;
 
-    let user = User.findOne({ uid: uid });
-    console.log(decoded, user);
-
+    let user = await User.findOne({ uid: uid });
     if (!user) {
       const newUser = new User({
         uid: uid,
@@ -52,7 +50,7 @@ app.post("/api/auth/google", async (req, res) => {
   }
 
   res.sendStatus(200);
-});
+}));
 
 const PORT = process.env.PORT || 8080;
 app.listen(

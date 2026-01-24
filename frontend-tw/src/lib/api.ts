@@ -67,9 +67,9 @@ const setStatus = (id: string, status: string) => async (dispatch: Dispatch) => 
 const createUser = () => async (_: Dispatch) => {
   const user = auth.currentUser;
   if (user) {
-    const token = user.getIdToken();
+    const token = await user.getIdToken();
 
-    const response = await axios.put(`${host}/api/auth/google`, {
+    const response = await axios.post(`${host}/api/auth/google`, {}, {
       headers: {
         Authorization: `Bearer ${token}`
       }
