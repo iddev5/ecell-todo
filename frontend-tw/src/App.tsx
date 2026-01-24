@@ -139,11 +139,14 @@ export default function App() {
       if (!loading) {
         const uid = await user.getIdToken();
         dispatch(api.getProjects(uid));
-        dispatch(api.getTodos());
       }
     };
     T();
   }, [loading])
+
+  useEffect(() => {
+    dispatch(api.getTodos());
+  });
 
   const isClosed = (el: string) => ["closed", "not an issue"].some(status => el === status);
 

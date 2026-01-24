@@ -7,6 +7,7 @@ export const createTodo = asyncHandler(async (req, res) => {
 
   const todoData = {
     hash: count + 1,
+    pid: req.body.pid,
     title: req.body.title,
     desc: req.body.desc,
   };
@@ -18,7 +19,9 @@ export const createTodo = asyncHandler(async (req, res) => {
 
 // READ
 export const getTodos = asyncHandler(async (req, res) => {
-  const todos = await Todo.find({});
+  const todos = await Todo.find({
+    // pid: req.pid 
+  });
   res.json(todos);
 });
 

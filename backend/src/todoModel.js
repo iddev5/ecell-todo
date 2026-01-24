@@ -6,6 +6,10 @@ const todoSchema = Schema(
       type: Number,
       required: true,
     },
+    pid: {
+      type: String,
+      required: true,
+    },
     title: {
       type: String,
       required: true,

@@ -14,6 +14,7 @@ const actionFormSchema = z.object({
 
 export default function ActionBar() {
   const dispatch = useAppDispatch();
+  const currentProject = useAppSelector((state: RootState) => state.projects.currentProject);
 
   const form = useForm({
     resolver: zodResolver(actionFormSchema),
@@ -23,7 +24,8 @@ export default function ActionBar() {
   });
 
   const onSubmit = (data: z.infer<typeof actionFormSchema>) => {
-    dispatch(api.createTodo(data.title, ''));
+    const pid = currentProject._id;
+    dispatch(api.createTodo(pid, data.title, ''));
     form.reset()
   }
 

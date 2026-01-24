@@ -16,17 +16,18 @@ import { auth } from "./firebase";
 
 const host = import.meta.env.VITE_APP_HOST || "";
 
-const getTodos = () => async (dispatch: Dispatch) => {
-  const response = await axios.get(`${host}/api/`);
+const getTodos = (pid: string) => async (dispatch: Dispatch) => {
+  const response = await axios.get(`${host}/api/${pid}`);
   dispatch(setTodo(response.data));
 };
 
 const createTodo =
-  (title: string, desc: string = "") =>
+  (pid: string, title: string, desc: string = "") =>
   async (dispatch: Dispatch) => {
     if (title === undefined || title === "") return;
 
     const new_todo = {
+      pid: pid,
       title: title,
       desc: desc,
     };

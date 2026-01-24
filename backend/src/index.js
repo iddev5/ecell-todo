@@ -28,7 +28,7 @@ app.use(cors());
 app.use(express.json());
 
 app.post("/api", createTodo);
-app.get("/api", getTodos);
+app.get("/api/:pid", getTodos);
 app.put("/api/:id", updateTodo);
 app.delete("/api/:id", deleteTodo);
 

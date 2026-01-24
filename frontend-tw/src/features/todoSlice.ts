@@ -3,6 +3,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 export interface Todo {
   _id: string;
+  pid: string,
   hash: number,
   title: string;
   desc: string;
