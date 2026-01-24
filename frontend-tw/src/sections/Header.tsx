@@ -7,6 +7,7 @@ import { Moon, Search, Sun, Plus } from 'lucide-react';
 import { auth } from '../lib/firebase';
 import { useAuth } from "@/components/auth-provider";
 import { useAppDispatch, useAppSelector } from "../lib/store";
+import { setCurrentProject } from "@/features/projectSlice";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetFooter } from "@/components/ui/sheet";
 
@@ -55,6 +56,10 @@ function SideBar() {
       navigate('/project/new');
     }
 
+    const setProject = (proj) => {
+      dispatch(setCurrentProject(proj));
+    }
+
     return (
         <SheetHeader>
             <SheetTitle>{user?.displayName}</SheetTitle>
@@ -65,7 +70,9 @@ function SideBar() {
               </Button>
               <div className="mt-4 flex flex-col gap-2 items-start">{
                   projects.map(proj =>
-                    <Button className="w-full justify-start" variant="secondary"><p className="truncate">{proj.name}</p></Button>
+                    <Button className="w-full justify-start" variant="secondary" onClick={() => setProject(proj)}>
+                      <p className="truncate">{proj.name}</p>
+                    </Button>
                   )
               }</div>
             </SheetDescription>
