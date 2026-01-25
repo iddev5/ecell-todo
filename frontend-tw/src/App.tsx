@@ -138,7 +138,7 @@ export default function App() {
 
   useEffect(() => {
     dispatch(api.getTodos(params.pid));
-  }, []);
+  }, [params]);
 
   const isClosed = (el: string) => ["closed", "not an issue"].some(status => el === status);
 
