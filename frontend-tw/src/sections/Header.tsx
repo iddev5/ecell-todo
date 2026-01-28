@@ -13,7 +13,7 @@ import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescri
 
 import api from "@/lib/api";
 
-function ProfileTrigger() {
+export function ProfileTrigger() {
     const { user } = useAuth();
 
     return (
