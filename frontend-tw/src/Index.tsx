@@ -4,11 +4,16 @@ import { getAdditionalUserInfo, signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "./lib/firebase";
 import { useAppDispatch } from "./lib/store";
 import api from "./lib/api";
+import { useAuth } from '@/components/auth-provider';
 import { useNavigate } from "react-router";
 
 export default function Index() {
+    const {user, loading} = useAuth();
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
+
+    if (!loading && user !== null)
+      navigate('/home');
 
     const signIn = async () => {
         const res = await signInWithPopup(auth, googleProvider);

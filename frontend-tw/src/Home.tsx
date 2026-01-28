@@ -15,6 +15,9 @@ export default function Home() {
   const projects = useAppSelector((state: RootState) => state.projects.projects);
   const navigate = useNavigate();
 
+  if (!loading && user === null)
+    navigate('/');
+
   useEffect(() => {
     const T = async () => {
       if (!loading) {
